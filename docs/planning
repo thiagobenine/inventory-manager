@@ -1,0 +1,16 @@
+Entidades:
+    ...
+
+Casos de Uso:
+    1. Adicionar uma intenção de pedido
+    2. Setar o estado atual do estoque
+    3. Consolidar uma intenção de pedido
+    4. Cancelar uma intenção de pedido
+
+Integrações:
+    1. Input/Output via Telegram
+    2. Avaliar uma integração Goomer/Telegram
+    3. Banco de dados
+    4. Criar uma desnecessária só pra ficar mais complexo
+    5. Integração com new relic
+    6. Deploy/Infra
