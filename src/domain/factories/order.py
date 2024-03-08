@@ -15,8 +15,8 @@ class OrderFactory:
         return Order(
             id=uuid4(),
             external_id=input_dto.external_order_id,
-            created_at=datetime.strptime(input_dto.created_at, "%Y-%m-%d %H:%M:%S"),
-            updated_at=datetime.strptime(input_dto.created_at, "%Y-%m-%d %H:%M:%S"),
+            created_at=datetime.strptime(input_dto.created_at, "%Y-%m-%dT%H:%M:%S"),
+            updated_at=datetime.strptime(input_dto.created_at, "%Y-%m-%dT%H:%M:%S"),
             is_cancelled=False,
             client=client,
             items=order_items,
