@@ -1,11 +1,15 @@
 Entidades:
-    ...
+    1. Item
+    2. Cliente
+    3. Pedido
+    4. ItemPedido
 
 Casos de Uso:
-    1. Adicionar uma intenção de pedido
-    2. Setar o estado atual do estoque
-    3. Consolidar uma intenção de pedido
-    4. Cancelar uma intenção de pedido
+    1. Adicionar um pedido
+    2. Adicionar Item
+    3. Remover Item
+    4. Incrementar o estoque do Item
+    5. Cancelar um pedido
 
 Integrações:
     1. Input/Output via Telegram
