@@ -10,7 +10,7 @@ from domain.entities.item import Item
 
 class OrderItem(BaseModel):
     quantity: int
-    item: Item
+    item_id: int
 
 class Order(BaseModel):
     id: UUID

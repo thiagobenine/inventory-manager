@@ -6,5 +6,5 @@ class Item(BaseModel):
     name: str
     inventory_quantity: int
 
-    def update_inventory(self, requested_quantity: int):
-        self.inventory_quantity -= requested_quantity
+    def decrease_inventory_quantity(self, quantity: int):
+        self.inventory_quantity -= quantity

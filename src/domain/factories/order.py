@@ -7,17 +7,6 @@ from domain.entities.order import Order, OrderItem
 from domain.use_cases.create_order.dtos import CreateOrderInputDTO, OrderItemInputDTO
 
 
-class OrderItemFactory:
-    @staticmethod
-    def build(
-        item: Item, quantity: int
-    ) -> OrderItem:
-        return OrderItem(
-            item=item,
-            quantity=quantity
-        )
-
-
 class OrderFactory:
     @staticmethod
     def build(
