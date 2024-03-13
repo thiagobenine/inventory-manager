@@ -57,7 +57,6 @@ class TestAddItemUseCase:
         item_name = "Marmita Vegana"
         inventory_quantity = 50
         item_repository.find_item_by_name.return_value = Item(
-            id=uuid4(),
             name=item_name,
             inventory_quantity=inventory_quantity
         )

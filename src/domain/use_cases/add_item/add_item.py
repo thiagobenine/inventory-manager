@@ -1,5 +1,3 @@
-from uuid import uuid4
-
 from domain.entities.item import Item
 from domain.exceptions import ItemAlreadyExistsError
 from domain.ports.repositories.item import ItemRepositoryInterface
@@ -16,7 +14,6 @@ class AddItemUseCase:
             raise ItemAlreadyExistsError(input_dto.name)
 
         new_item = Item(
-            id=uuid4(),
             name=input_dto.name, 
             inventory_quantity=input_dto.inventory_quantity
         )

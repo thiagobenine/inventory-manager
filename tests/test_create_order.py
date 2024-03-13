@@ -1,5 +1,4 @@
 from unittest.mock import Mock, call
-from uuid import uuid4
 
 import pytest
 
@@ -33,11 +32,11 @@ class TestCreateOrderUseCase:
 
     @pytest.fixture
     def item_1(self):
-        return Item(name="Item 1", inventory_quantity=10, id=uuid4())
+        return Item(name="Item 1", inventory_quantity=10)
 
     @pytest.fixture
     def item_2(self):
-        return Item(name="Item 2", inventory_quantity=5, id=uuid4())
+        return Item(name="Item 2", inventory_quantity=5)
 
     def test_create_order_use_case_with_success(
         self, client_repository, item_repository, order_repository, client, item_1, item_2
