@@ -1,8 +1,10 @@
-from pydantic import BaseModel
+from uuid import UUID, uuid4
+
+from pydantic import BaseModel, Field
 
 
 class Item(BaseModel):
-    id: int
+    id: UUID = Field(default_factory=uuid4)
     name: str
     inventory_quantity: int
 

@@ -1,0 +1,20 @@
+# Entidades:
+1. Item
+2. Cliente
+3. Pedido
+4. ItemPedido
+
+# Casos de Uso:
+- [x] 1. Adicionar um pedido
+- [x] 2. Adicionar Item
+- [ ] 3. Remover Item
+- [ ] 4. Setar o estoque do Item
+- [ ] 5. Cancelar um pedido
+
+# Integrações:
+- [ ] 1. Input/Output via Telegram
+- [ ] 2. Avaliar uma integração Goomer/Telegram
+- [ ] 3. Banco de dados
+- [ ] 4. Criar uma desnecessária só pra ficar mais complexo
+- [ ] 5. Integração com new relic
+- [ ] 6. Deploy/Infra
