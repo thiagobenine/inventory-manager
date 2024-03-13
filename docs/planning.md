@@ -12,9 +12,10 @@
 - [ ] 5. Cancelar um pedido
 
 # Integrações:
-- [ ] 1. Input/Output via Telegram
-- [ ] 2. Avaliar uma integração Goomer/Telegram
-- [ ] 3. Banco de dados
-- [ ] 4. Criar uma desnecessária só pra ficar mais complexo
-- [ ] 5. Integração com new relic
-- [ ] 6. Deploy/Infra
+- [ ] 1. Banco de dados
+- [ ] 2. Avaliar a criação de uma API para o Bot do Telegram se comunicar
+- [ ] 3. Input/Output via Bot do Telegram
+- [ ] 4. Avaliar uma integração Goomer/Telegram
+- [ ] 5. Criar uma desnecessária só pra ficar mais complexo
+- [ ] 6. Integração com new relic
+- [ ] 7. Deploy/Infra
