@@ -10,3 +10,8 @@ class ClientNotFoundError(DomainException):
 class ItemNotFoundError(DomainException):
     def __init__(self, item_name: str):
         super().__init__(f"Item not found: {item_name}")
+
+        
+class ItemAlreadyExistsError(DomainException):
+    def __init__(self, item_name: str):
+        super().__init__(f"Item already exists: {item_name}")

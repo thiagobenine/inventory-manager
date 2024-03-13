@@ -1,8 +1,10 @@
+from uuid import UUID
+
 from pydantic import BaseModel
 
 
 class Item(BaseModel):
-    id: int
+    id: UUID
     name: str
     inventory_quantity: int
 
