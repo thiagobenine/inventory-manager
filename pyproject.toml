@@ -10,6 +10,7 @@ license = "MIT"
 [tool.poetry.dependencies]
 python = "^3.12"
 pydantic = "^2.6.3"
+ruff = "^0.3.3"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -18,3 +19,41 @@ pytest = "^8.0.2"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 79
+target-version = "py310"
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+    "**migrations**",
+]
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "C90", "UP", "N", "I", "SIM", "C4", "RUF"]
+ignore = ["N818"]
+per-file-ignores = {}
+
+[tool.ruff.lint.mccabe]
+max-complexity = 7
+
+[tool.ruff.lint.isort]
+known-first-party = ["src"]

@@ -1,16 +1,15 @@
 from datetime import datetime
-from typing import List
 from uuid import UUID, uuid4
 
 from pydantic import BaseModel, Field
 
-from domain.entities.client import Client
-from domain.entities.item import Item
+from src.domain.entities.client import Client
 
 
 class OrderItem(BaseModel):
     quantity: int
     item_id: UUID
+
 
 class Order(BaseModel):
     id: UUID = Field(default_factory=uuid4)
@@ -19,4 +18,4 @@ class Order(BaseModel):
     updated_at: datetime
     is_cancelled: bool
     client: Client
-    items: List[OrderItem]
+    items: list[OrderItem]

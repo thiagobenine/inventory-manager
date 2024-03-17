@@ -1,12 +1,15 @@
 from unittest.mock import Mock
-from uuid import UUID, uuid4
+from uuid import UUID
 
 import pytest
 
-from domain.entities.item import Item
-from domain.exceptions import ItemAlreadyExistsError
-from domain.use_cases.add_item.add_item import AddItemUseCase
-from domain.use_cases.add_item.dtos import AddItemInputDTO, AddItemOutputDTO
+from src.domain.entities.item import Item
+from src.domain.exceptions import ItemAlreadyExistsError
+from src.domain.use_cases.add_item.add_item import AddItemUseCase
+from src.domain.use_cases.add_item.dtos import (
+    AddItemInputDTO,
+    AddItemOutputDTO,
+)
 
 
 class TestAddItemUseCase:
@@ -19,7 +22,9 @@ class TestAddItemUseCase:
         item_name = "Marmita Fit de Frango"
         inventory_quantity = 100
         item_repository.find_item_by_name.return_value = None
-        input_dto = AddItemInputDTO(name=item_name, inventory_quantity=inventory_quantity)
+        input_dto = AddItemInputDTO(
+            name=item_name, inventory_quantity=inventory_quantity
+        )
         use_case = AddItemUseCase(item_repository)
 
         # Act
@@ -42,7 +47,9 @@ class TestAddItemUseCase:
         item_name = "Marmita Fit de Carne"
         inventory_quantity = -10
         item_repository.find_item_by_name.return_value = None
-        input_dto = AddItemInputDTO(name=item_name, inventory_quantity=inventory_quantity)
+        input_dto = AddItemInputDTO(
+            name=item_name, inventory_quantity=inventory_quantity
+        )
         use_case = AddItemUseCase(item_repository)
 
         # Act
@@ -60,15 +67,18 @@ class TestAddItemUseCase:
         assert saved_item.inventory_quantity == inventory_quantity
         assert isinstance(saved_item.id, UUID)
 
-    def test_add_item_use_case_existing_item_raises_error(self, item_repository):
+    def test_add_item_use_case_existing_item_raises_error(
+        self, item_repository
+    ):
         # Arrange
         item_name = "Marmita Vegana"
         inventory_quantity = 50
         item_repository.find_item_by_name.return_value = Item(
-            name=item_name,
-            inventory_quantity=inventory_quantity
+            name=item_name, inventory_quantity=inventory_quantity
         )
-        input_dto = AddItemInputDTO(name=item_name, inventory_quantity=inventory_quantity)
+        input_dto = AddItemInputDTO(
+            name=item_name, inventory_quantity=inventory_quantity
+        )
         use_case = AddItemUseCase(item_repository)
 
         # Act & Assert
