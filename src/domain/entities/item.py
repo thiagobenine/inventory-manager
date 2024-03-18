@@ -10,3 +10,6 @@ class Item(BaseModel):
 
     def decrease_inventory_quantity(self, quantity: int):
         self.inventory_quantity -= quantity
+
+    def set_inventory_quantity(self, quantity: int):
+        self.inventory_quantity = quantity
