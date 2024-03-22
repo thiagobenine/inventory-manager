@@ -4,7 +4,7 @@ import pytest
 
 from src.domain.entities.client import Client
 from src.domain.entities.item import Item
-from src.domain.exceptions import ClientNotFoundError, ItemNotFoundError
+from src.domain.exceptions import ClientNotFoundError, ItemNotFoundByNameError
 from src.domain.use_cases.create_order.create_order import CreateOrderUseCase
 from src.domain.use_cases.create_order.dtos import (
     CreateOrderInputDTO,
@@ -154,6 +154,9 @@ class TestCreateOrderUseCase:
             use_case.execute(input_dto)
         assert str(exc_info.value) == "Client not found: Tirulipa"
 
+        item_repository.save.assert_not_called()
+        order_repository.save.assert_not_called()
+
     def test_create_order_use_case_raises_item_not_found(
         self, client_repository, item_repository, order_repository, client
     ):
@@ -173,6 +176,9 @@ class TestCreateOrderUseCase:
         )
 
         # Act & Assert
-        with pytest.raises(ItemNotFoundError) as exc_info:
+        with pytest.raises(ItemNotFoundByNameError) as exc_info:
             use_case.execute(input_dto)
         assert str(exc_info.value) == "Item not found: Item 1"
+
+        item_repository.save.assert_not_called()
+        order_repository.save.assert_not_called()

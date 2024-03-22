@@ -1,5 +1,5 @@
 from src.domain.entities.order import OrderItem
-from src.domain.exceptions import ClientNotFoundError, ItemNotFoundError
+from src.domain.exceptions import ClientNotFoundError, ItemNotFoundByNameError
 from src.domain.factories.order import OrderFactory
 from src.domain.ports.repositories.client import ClientRepositoryInterface
 from src.domain.ports.repositories.item import ItemRepositoryInterface
@@ -34,7 +34,7 @@ class CreateOrderUseCase:
         for item_input in input_dto.items:
             item = self.item_repository.find_item_by_name(item_input.item_name)
             if not item:
-                raise ItemNotFoundError(item_input.item_name)
+                raise ItemNotFoundByNameError(item_input.item_name)
 
             item.decrease_inventory_quantity(item_input.quantity)
             self.item_repository.save(item)

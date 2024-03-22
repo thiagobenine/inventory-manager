@@ -19,3 +19,7 @@ class Order(BaseModel):
     is_cancelled: bool
     client: Client
     items: list[OrderItem]
+
+    def cancel(self):
+        self.is_cancelled = True
+        self.updated_at = datetime.now()
