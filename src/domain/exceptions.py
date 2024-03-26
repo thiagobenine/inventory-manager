@@ -15,9 +15,9 @@ class ItemNotFoundByNameError(DomainException):
         super().__init__(f"Item not found: {item_name}")
 
 
-class ItemNotFoundByIdError(DomainException):
-    def __init__(self, item_id: UUID):
-        super().__init__(f"Item not found: {item_id}")
+class ItemsNotFoundByIdError(DomainException):
+    def __init__(self, items_ids: list[UUID]):
+        super().__init__(f"Items not found: {items_ids}")
 
 
 class ItemAlreadyExistsError(DomainException):

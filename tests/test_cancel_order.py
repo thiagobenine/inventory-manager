@@ -8,7 +8,7 @@ from freezegun import freeze_time
 from src.domain.entities.client import Client
 from src.domain.entities.item import Item
 from src.domain.entities.order import Order, OrderItem
-from src.domain.exceptions import ItemNotFoundByIdError, OrderNotFoundError
+from src.domain.exceptions import ItemsNotFoundByIdError, OrderNotFoundError
 from src.domain.use_cases.cancel_order.cancel_order import CancelOrderUseCase
 from src.domain.use_cases.cancel_order.dtos import (
     CancelOrderInputDTO,
@@ -56,11 +56,13 @@ class TestCancelOrderUseCase:
 
         item_name = "Marmita de Frango"
 
-        item_repository.find_item_by_id.return_value = Item(
-            id=item_id,
-            name=item_name,
-            inventory_quantity=10,
-        )
+        item_repository.find_items_by_ids.return_value = [
+            Item(
+                id=item_id,
+                name=item_name,
+                inventory_quantity=10,
+            )
+        ]
 
         input_dto = CancelOrderInputDTO(order_id=order_id)
 
@@ -85,7 +87,7 @@ class TestCancelOrderUseCase:
         assert output_dto.order_items[0].quantity == 10
         assert output_dto.order_items[0].inventory_quantity == 10
 
-        item_repository.find_item_by_id.assert_called_once_with(item_id)
+        item_repository.find_items_by_ids.assert_called_once_with([item_id])
 
         order_repository.find_order_by_id.assert_called_once_with(order_id)
         order_repository.save.assert_called_once()
@@ -140,7 +142,7 @@ class TestCancelOrderUseCase:
             client=client,
             items=[order_item],
         )
-        item_repository.find_item_by_id.return_value = None
+        item_repository.find_items_by_ids.return_value = []
 
         input_dto = CancelOrderInputDTO(order_id=order_id)
 
@@ -150,8 +152,8 @@ class TestCancelOrderUseCase:
         )
 
         # Act & Assert
-        with pytest.raises(ItemNotFoundByIdError) as exc_info:
+        with pytest.raises(ItemsNotFoundByIdError) as exc_info:
             use_case.execute(input_dto)
-        assert str(exc_info.value) == f"Item not found: {item_id}"
+        assert str(exc_info.value) == f"Items not found: ['{item_id}']"
 
         order_repository.save.assert_not_called()
