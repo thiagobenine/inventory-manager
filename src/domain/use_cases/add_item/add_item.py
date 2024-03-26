@@ -1,7 +1,7 @@
 from domain.entities.item import Item
 from domain.exceptions import ItemAlreadyExistsError
 from domain.ports.repositories.item import ItemRepositoryInterface
-from domain.use_cases.add_item.dtos import AddItemInputDTO
+from domain.use_cases.add_item.dtos import AddItemInputDTO, AddItemOutputDTO
 
 
 class AddItemUseCase:
@@ -18,4 +18,8 @@ class AddItemUseCase:
             inventory_quantity=input_dto.inventory_quantity
         )
         self.item_repository.save(new_item)
-        return new_item
+        
+        return AddItemOutputDTO(
+            name=new_item.name, 
+            inventory_quantity=new_item.inventory_quantity
+        )

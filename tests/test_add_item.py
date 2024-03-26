@@ -6,7 +6,7 @@ import pytest
 from domain.entities.item import Item
 from domain.exceptions import ItemAlreadyExistsError
 from domain.use_cases.add_item.add_item import AddItemUseCase
-from domain.use_cases.add_item.dtos import AddItemInputDTO
+from domain.use_cases.add_item.dtos import AddItemInputDTO, AddItemOutputDTO
 
 
 class TestAddItemUseCase:
@@ -23,9 +23,13 @@ class TestAddItemUseCase:
         use_case = AddItemUseCase(item_repository)
 
         # Act
-        use_case.execute(input_dto)
+        output_dto = use_case.execute(input_dto)
 
         # Assert
+        assert isinstance(output_dto, AddItemOutputDTO)
+        assert output_dto.name == item_name
+        assert output_dto.inventory_quantity == inventory_quantity
+
         item_repository.find_item_by_name.assert_called_once_with(item_name)
         item_repository.save.assert_called_once()
         saved_item = item_repository.save.call_args[0][0]
@@ -42,9 +46,13 @@ class TestAddItemUseCase:
         use_case = AddItemUseCase(item_repository)
 
         # Act
-        use_case.execute(input_dto)
+        output_dto = use_case.execute(input_dto)
 
         # Assert
+        assert isinstance(output_dto, AddItemOutputDTO)
+        assert output_dto.name == item_name
+        assert output_dto.inventory_quantity == inventory_quantity
+
         item_repository.find_item_by_name.assert_called_once_with(item_name)
         item_repository.save.assert_called_once()
         saved_item = item_repository.save.call_args[0][0]
@@ -64,8 +72,9 @@ class TestAddItemUseCase:
         use_case = AddItemUseCase(item_repository)
 
         # Act & Assert
-        with pytest.raises(ItemAlreadyExistsError):
+        with pytest.raises(ItemAlreadyExistsError) as exc_info:
             use_case.execute(input_dto)
 
+        assert str(exc_info.value) == f"Item already exists: {item_name}"
         item_repository.find_item_by_name.assert_called_once_with(item_name)
         item_repository.save.assert_not_called()
