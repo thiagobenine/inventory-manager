@@ -3,7 +3,7 @@ from unittest.mock import Mock
 import pytest
 
 from src.domain.entities.item import Item
-from src.domain.exceptions import ItemNotFoundError
+from src.domain.exceptions import ItemNotFoundByNameError
 from src.domain.use_cases.remove_item.dtos import (
     RemoveItemInputDTO,
     RemoveItemOutputDTO,
@@ -46,7 +46,7 @@ class TestRemoveItemUseCase:
         use_case = RemoveItemUseCase(item_repository)
 
         # Act & Assert
-        with pytest.raises(ItemNotFoundError) as exc_info:
+        with pytest.raises(ItemNotFoundByNameError) as exc_info:
             use_case.execute(input_dto)
 
         assert str(exc_info.value) == f"Item not found: {item_name}"

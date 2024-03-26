@@ -4,7 +4,7 @@ from uuid import UUID
 import pytest
 
 from src.domain.entities.item import Item
-from src.domain.exceptions import ItemNotFoundError
+from src.domain.exceptions import ItemNotFoundByNameError
 from src.domain.use_cases.set_inventory_quantity.dtos import (
     SetInventoryQuantityInputDTO,
     SetInventoryQuantityOutputDTO,
@@ -90,7 +90,7 @@ class TestSetInventoryQuantityUseCase:
         use_case = SetInventoryQuantityUseCase(item_repository)
 
         # Act & Assert
-        with pytest.raises(ItemNotFoundError) as exc_info:
+        with pytest.raises(ItemNotFoundByNameError) as exc_info:
             use_case.execute(input_dto)
 
         assert str(exc_info.value) == f"Item not found: {item_name}"

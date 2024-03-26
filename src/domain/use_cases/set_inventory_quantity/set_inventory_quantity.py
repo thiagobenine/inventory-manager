@@ -1,4 +1,4 @@
-from src.domain.exceptions import ItemNotFoundError
+from src.domain.exceptions import ItemNotFoundByNameError
 from src.domain.ports.repositories.item import ItemRepositoryInterface
 from src.domain.use_cases.set_inventory_quantity.dtos import (
     SetInventoryQuantityInputDTO,
@@ -15,7 +15,7 @@ class SetInventoryQuantityUseCase:
     ) -> SetInventoryQuantityOutputDTO:
         item = self.item_repository.find_item_by_name(input_dto.item_name)
         if not item:
-            raise ItemNotFoundError(input_dto.item_name)
+            raise ItemNotFoundByNameError(input_dto.item_name)
 
         item.set_inventory_quantity(input_dto.inventory_quantity)
         self.item_repository.save(item)

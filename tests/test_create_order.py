@@ -1,10 +1,10 @@
-from unittest.mock import Mock, call
+from unittest.mock import Mock
 
 import pytest
 
 from src.domain.entities.client import Client
 from src.domain.entities.item import Item
-from src.domain.exceptions import ClientNotFoundError, ItemNotFoundError
+from src.domain.exceptions import ClientNotFoundError, ItemsNotFoundByNameError
 from src.domain.use_cases.create_order.create_order import CreateOrderUseCase
 from src.domain.use_cases.create_order.dtos import (
     CreateOrderInputDTO,
@@ -49,7 +49,7 @@ class TestCreateOrderUseCase:
     ):
         # Arrange
         client_repository.find_client_by_name.return_value = client
-        item_repository.find_item_by_name.side_effect = [item_1, item_2]
+        item_repository.find_items_by_names.return_value = [item_1, item_2]
 
         input_dto = CreateOrderInputDTO(
             client_name="Tirulipa",
@@ -83,11 +83,12 @@ class TestCreateOrderUseCase:
         client_repository.find_client_by_name.assert_called_once_with(
             "Tirulipa"
         )
-        assert item_repository.find_item_by_name.call_count == 2
-        item_repository.find_item_by_name.assert_has_calls(
-            [call("Item 1"), call("Item 2")]
+
+        assert item_repository.find_items_by_names.called_once_with(
+            ["Item 1", "Item 2"]
         )
-        item_repository.save.assert_has_calls([call(item_1), call(item_2)])
+        assert item_repository.save_all.called_once_with([item_1, item_2])
+
         order_repository.save.assert_called_once()
 
     def test_create_order_use_case_negative_inventory(
@@ -100,7 +101,7 @@ class TestCreateOrderUseCase:
     ):
         # Arrange
         client_repository.find_client_by_name.return_value = client
-        item_repository.find_item_by_name.return_value = item_1
+        item_repository.find_items_by_names.return_value = [item_1]
 
         input_dto = CreateOrderInputDTO(
             client_name="Tirulipa",
@@ -128,8 +129,8 @@ class TestCreateOrderUseCase:
         client_repository.find_client_by_name.assert_called_once_with(
             "Tirulipa"
         )
-        item_repository.find_item_by_name.assert_called_once_with("Item 1")
-        item_repository.save.assert_called_once_with(item_1)
+        item_repository.find_items_by_names.assert_called_once_with(["Item 1"])
+        item_repository.save_all.assert_called_once_with([item_1])
         order_repository.save.assert_called_once()
 
     def test_create_order_use_case_raises_client_not_found(
@@ -154,12 +155,15 @@ class TestCreateOrderUseCase:
             use_case.execute(input_dto)
         assert str(exc_info.value) == "Client not found: Tirulipa"
 
+        item_repository.save.assert_not_called()
+        order_repository.save.assert_not_called()
+
     def test_create_order_use_case_raises_item_not_found(
         self, client_repository, item_repository, order_repository, client
     ):
         # Arrange
         client_repository.find_client_by_name.return_value = client
-        item_repository.find_item_by_name.return_value = None
+        item_repository.find_items_by_names.return_value = []
 
         input_dto = CreateOrderInputDTO(
             client_name="Tirulipa",
@@ -173,6 +177,9 @@ class TestCreateOrderUseCase:
         )
 
         # Act & Assert
-        with pytest.raises(ItemNotFoundError) as exc_info:
+        with pytest.raises(ItemsNotFoundByNameError) as exc_info:
             use_case.execute(input_dto)
-        assert str(exc_info.value) == "Item not found: Item 1"
+        assert str(exc_info.value) == "Items not found: ['Item 1']"
+
+        item_repository.save.assert_not_called()
+        order_repository.save.assert_not_called()
