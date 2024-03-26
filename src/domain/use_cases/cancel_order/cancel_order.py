@@ -52,17 +52,11 @@ class CancelOrderUseCase:
             items_ids_from_order, items_from_repository
         )
 
+        item_map_by_id = {item.id: item for item in items_from_repository}
+
         order_items = []
         for order_item in order.items:
-            item = next(
-                (
-                    item
-                    for item in items_from_repository
-                    if item.id == order_item.item_id
-                ),
-                None,
-            )
-
+            item = item_map_by_id[order_item.item_id]
             order_items.append(
                 OrderItemOutputDTO(
                     item_name=item.name,
