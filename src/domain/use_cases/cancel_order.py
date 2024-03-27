@@ -3,12 +3,14 @@ from uuid import UUID
 
 from src.domain.entities.item import Item
 from src.domain.exceptions import ItemsNotFoundByIdError, OrderNotFoundError
-from src.domain.ports.repositories.item import ItemRepositoryInterface
-from src.domain.ports.repositories.order import OrderRepositoryInterface
-from src.domain.use_cases.cancel_order.dtos import (
+from src.domain.ports.inbound.orders.dtos import (
     CancelOrderInputDTO,
+    CancelOrderItemOutputDTO,
     CancelOrderOutputDTO,
-    OrderItemOutputDTO,
+)
+from src.domain.ports.outbound.repositories.item import ItemRepositoryInterface
+from src.domain.ports.outbound.repositories.order import (
+    OrderRepositoryInterface,
 )
 
 
@@ -58,7 +60,7 @@ class CancelOrderUseCase:
         for order_item in order.items:
             item = item_map_by_id[order_item.item_id]
             order_items.append(
-                OrderItemOutputDTO(
+                CancelOrderItemOutputDTO(
                     item_name=item.name,
                     quantity=order_item.quantity,
                     inventory_quantity=item.inventory_quantity,

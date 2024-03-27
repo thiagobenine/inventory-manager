@@ -5,12 +5,12 @@ import pytest
 from src.domain.entities.client import Client
 from src.domain.entities.item import Item
 from src.domain.exceptions import ClientNotFoundError, ItemsNotFoundByNameError
-from src.domain.use_cases.create_order.create_order import CreateOrderUseCase
-from src.domain.use_cases.create_order.dtos import (
+from src.domain.ports.inbound.orders.dtos import (
     CreateOrderInputDTO,
     CreateOrderOutputDTO,
     OrderItemInputDTO,
 )
+from src.domain.use_cases.create_order import CreateOrderUseCase
 
 
 class TestCreateOrderUseCase:

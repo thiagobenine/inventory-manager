@@ -5,11 +5,11 @@ import pytest
 
 from src.domain.entities.item import Item
 from src.domain.exceptions import ItemAlreadyExistsError
-from src.domain.use_cases.add_item.add_item import AddItemUseCase
-from src.domain.use_cases.add_item.dtos import (
+from src.domain.ports.inbound.items.dtos import (
     AddItemInputDTO,
     AddItemOutputDTO,
 )
+from src.domain.use_cases.add_item import AddItemUseCase
 
 
 class TestAddItemUseCase:

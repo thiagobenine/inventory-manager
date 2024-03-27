@@ -1,9 +1,9 @@
 from src.domain.exceptions import ItemNotFoundByNameError
-from src.domain.ports.repositories.item import ItemRepositoryInterface
-from src.domain.use_cases.set_inventory_quantity.dtos import (
+from src.domain.ports.inbound.items.dtos import (
     SetInventoryQuantityInputDTO,
     SetInventoryQuantityOutputDTO,
 )
+from src.domain.ports.outbound.repositories.item import ItemRepositoryInterface
 
 
 class SetInventoryQuantityUseCase:

@@ -5,11 +5,11 @@ import pytest
 
 from src.domain.entities.item import Item
 from src.domain.exceptions import ItemNotFoundByNameError
-from src.domain.use_cases.set_inventory_quantity.dtos import (
+from src.domain.ports.inbound.items.dtos import (
     SetInventoryQuantityInputDTO,
     SetInventoryQuantityOutputDTO,
 )
-from src.domain.use_cases.set_inventory_quantity.set_inventory_quantity import (  # noqa
+from src.domain.use_cases.set_inventory_quantity import (
     SetInventoryQuantityUseCase,
 )
 

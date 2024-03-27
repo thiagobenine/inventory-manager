@@ -9,11 +9,11 @@ from src.domain.entities.client import Client
 from src.domain.entities.item import Item
 from src.domain.entities.order import Order, OrderItem
 from src.domain.exceptions import ItemsNotFoundByIdError, OrderNotFoundError
-from src.domain.use_cases.cancel_order.cancel_order import CancelOrderUseCase
-from src.domain.use_cases.cancel_order.dtos import (
+from src.domain.ports.inbound.orders.dtos import (
     CancelOrderInputDTO,
     CancelOrderOutputDTO,
 )
+from src.domain.use_cases.cancel_order import CancelOrderUseCase
 
 
 class TestCancelOrderUseCase:
