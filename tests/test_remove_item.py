@@ -4,11 +4,11 @@ import pytest
 
 from src.domain.entities.item import Item
 from src.domain.exceptions import ItemNotFoundByNameError
-from src.domain.use_cases.remove_item.dtos import (
+from src.domain.ports.inbound.items.dtos import (
     RemoveItemInputDTO,
     RemoveItemOutputDTO,
 )
-from src.domain.use_cases.remove_item.remove_item import RemoveItemUseCase
+from src.domain.use_cases.remove_item import RemoveItemUseCase
 
 
 class TestRemoveItemUseCase:

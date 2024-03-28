@@ -2,13 +2,17 @@ from src.domain.entities.item import Item
 from src.domain.entities.order import OrderItem
 from src.domain.exceptions import ClientNotFoundError, ItemsNotFoundByNameError
 from src.domain.factories.order import OrderFactory
-from src.domain.ports.repositories.client import ClientRepositoryInterface
-from src.domain.ports.repositories.item import ItemRepositoryInterface
-from src.domain.ports.repositories.order import OrderRepositoryInterface
-from src.domain.use_cases.create_order.dtos import (
+from src.domain.ports.inbound.orders.dtos import (
     CreateOrderInputDTO,
+    CreateOrderItemOutputDTO,
     CreateOrderOutputDTO,
-    OrderItemOutputDTO,
+)
+from src.domain.ports.outbound.repositories.client import (
+    ClientRepositoryInterface,
+)
+from src.domain.ports.outbound.repositories.item import ItemRepositoryInterface
+from src.domain.ports.outbound.repositories.order import (
+    OrderRepositoryInterface,
 )
 
 
@@ -75,7 +79,7 @@ class CreateOrderUseCase:
             client_name=client.name,
             external_order_id=order.external_id,
             order_items=[
-                OrderItemOutputDTO(
+                CreateOrderItemOutputDTO(
                     item_name=item_map_by_id[order_item.item_id].name,
                     quantity=order_item.quantity,
                     inventory_quantity=item_map_by_id[

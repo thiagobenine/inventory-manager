@@ -1,9 +1,9 @@
 from src.domain.exceptions import ItemNotFoundByNameError
-from src.domain.ports.repositories.item import ItemRepositoryInterface
-from src.domain.use_cases.remove_item.dtos import (
+from src.domain.ports.inbound.items.dtos import (
     RemoveItemInputDTO,
     RemoveItemOutputDTO,
 )
+from src.domain.ports.outbound.repositories.item import ItemRepositoryInterface
 
 
 class RemoveItemUseCase:

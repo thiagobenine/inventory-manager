@@ -1,10 +1,10 @@
 from src.domain.entities.item import Item
 from src.domain.exceptions import ItemAlreadyExistsError
-from src.domain.ports.repositories.item import ItemRepositoryInterface
-from src.domain.use_cases.add_item.dtos import (
+from src.domain.ports.inbound.items.dtos import (
     AddItemInputDTO,
     AddItemOutputDTO,
 )
+from src.domain.ports.outbound.repositories.item import ItemRepositoryInterface
 
 
 class AddItemUseCase:

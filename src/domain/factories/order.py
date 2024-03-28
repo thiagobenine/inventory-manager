@@ -2,7 +2,7 @@ from datetime import datetime
 
 from src.domain.entities.client import Client
 from src.domain.entities.order import Order, OrderItem
-from src.domain.use_cases.create_order.dtos import CreateOrderInputDTO
+from src.domain.ports.inbound.orders.dtos import CreateOrderInputDTO
 
 
 class OrderFactory:
