@@ -14,7 +14,7 @@ bot_token = os.environ["BOT_TOKEN"]
 webhook_url = os.environ["WEBHOOK_URL"]
 
 # Create the Updater object and configure the webhook
-bot = ExtBot(token=bot_token, request_kwargs={'read_timeout': 20, 'connect_timeout': 20})
+bot = ExtBot(token=bot_token)
 updater = Updater(bot=bot)
 
 # Get the dispatcher object to register handlers
