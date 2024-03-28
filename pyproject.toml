@@ -11,6 +11,7 @@ license = "MIT"
 python = "^3.12"
 pydantic = "^2.6.3"
 ruff = "^0.3.3"
+python-telegram-bot = "^21.0.1"
 
 
 [tool.poetry.group.dev.dependencies]
