@@ -2,23 +2,15 @@ import os
 
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
+    Application,
     CallbackQueryHandler,
     CommandHandler,
-    ExtBot,
     MessageHandler,
-    Updater,
     filters,
 )
 
 bot_token = os.environ["BOT_TOKEN"]
 webhook_url = os.environ["WEBHOOK_URL"]
-
-# Create the Updater object and configure the webhook
-bot = ExtBot(token=bot_token)
-updater = Updater(bot=bot)
-
-# Get the dispatcher object to register handlers
-dispatcher = updater.dispatcher
 
 
 # Function to display the main menu
@@ -52,6 +44,14 @@ def unknown(update, context):
 
 
 if __name__ == "__main__":
+    # Create the Application object and configure the webhook
+    application = Application.builder().token(bot_token).build()
+    webhook_url = f"{webhook_url}/bot"
+    application.bot.set_webhook(url=webhook_url)
+
+    # Get the dispatcher object to register handlers
+    dispatcher = application.dispatcher
+
     # Register the handlers
     start_handler = CommandHandler("start", start)
     menu_handler = CallbackQueryHandler(menu_actions)
@@ -62,12 +62,12 @@ if __name__ == "__main__":
     dispatcher.add_handler(unknown_handler)
 
     # Start the webhook
-    updater.start_webhook(
-        listen="0.0.0.0",
-        port=int(os.environ.get("PORT", "8443")),
+    application.run_webhook(
+        listen='0.0.0.0',
+        port=int(os.environ.get('PORT', '8443')),
         url_path="bot",
-        webhook_url=webhook_url,
+        webhook_url=webhook_url
     )
 
-    # Start the bot
-    updater.idle()
+    # Keep the program running
+    application.idle()
