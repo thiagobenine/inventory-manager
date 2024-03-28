@@ -4,6 +4,7 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
     CallbackQueryHandler,
     CommandHandler,
+    ExtBot,
     MessageHandler,
     Updater,
     filters,
@@ -13,7 +14,8 @@ bot_token = os.environ["BOT_TOKEN"]
 webhook_url = os.environ["WEBHOOK_URL"]
 
 # Create the Updater object and configure the webhook
-updater = Updater(bot_token, use_context=True)
+bot = ExtBot(token=bot_token, request_kwargs={'read_timeout': 20, 'connect_timeout': 20})
+updater = Updater(bot=bot)
 
 # Get the dispatcher object to register handlers
 dispatcher = updater.dispatcher
