@@ -9,9 +9,6 @@ from telegram.ext import (
     filters,
 )
 
-bot_token = os.environ["BOT_TOKEN"]
-webhook_url = os.environ["WEBHOOK_URL"]
-
 
 # Function to display the main menu
 async def start(update, context):
@@ -44,6 +41,9 @@ async def unknown(update, context):
 
 
 async def main():
+    bot_token = os.environ["BOT_TOKEN"]
+    webhook_url = os.environ["WEBHOOK_URL"]
+    
     # Create the Application object and configure the webhook
     application = Application.builder().token(bot_token).build()
     webhook_url = f"{webhook_url}/bot"
