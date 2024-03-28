@@ -4,9 +4,9 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
     CallbackQueryHandler,
     CommandHandler,
-    Filters,
     MessageHandler,
     Updater,
+    filters,
 )
 
 bot_token = os.environ["BOT_TOKEN"]
@@ -53,7 +53,7 @@ if __name__ == "__main__":
     # Register the handlers
     start_handler = CommandHandler("start", start)
     menu_handler = CallbackQueryHandler(menu_actions)
-    unknown_handler = MessageHandler(Filters.command, unknown)
+    unknown_handler = MessageHandler(filters.command, unknown)
 
     dispatcher.add_handler(start_handler)
     dispatcher.add_handler(menu_handler)
