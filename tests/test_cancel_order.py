@@ -100,6 +100,16 @@ class TestCancelOrderUseCase:
         assert saved_order.client == client
         assert saved_order.items == [order_item]
 
+        item_repository.save_all.assert_called_once()
+        saved_items = item_repository.save_all.call_args[0][0]
+        assert len(saved_items) == 1
+        saved_item = saved_items[0]
+        assert saved_item.id == item_id
+        assert saved_item.name == item_name
+        assert (
+            saved_item.inventory_quantity == 20
+        )  # initial inventory_quantity was 10
+
     def test_cancel_order_use_case_raises_order_not_found(
         self,
         order_repository,
@@ -157,3 +167,4 @@ class TestCancelOrderUseCase:
         assert str(exc_info.value) == f"Items not found: ['{item_id}']"
 
         order_repository.save.assert_not_called()
+        item_repository.save_all.assert_not_called()

@@ -56,16 +56,23 @@ class CancelOrderUseCase:
 
         item_map_by_id = {item.id: item for item in items_from_repository}
 
-        order_items = []
+        order_items_output_dtos = []
         for order_item in order.items:
             item = item_map_by_id[order_item.item_id]
-            order_items.append(
+            order_items_output_dtos.append(
                 CancelOrderItemOutputDTO(
                     item_name=item.name,
                     quantity=order_item.quantity,
                     inventory_quantity=item.inventory_quantity,
                 )
             )
+
+        items_to_save = []
+        for order_item in order.items:
+            item = item_map_by_id[order_item.item_id]
+            item.increase_inventory_quantity(order_item.quantity)
+            items_to_save.append(item)
+        self.item_repository.save_all(items_to_save)
 
         order.cancel()
         self.order_repository.save(order)
@@ -81,5 +88,5 @@ class CancelOrderUseCase:
             updated_at=datetime.strftime(
                 order.updated_at, "%Y-%m-%dT%H:%M:%S"
             ),
-            order_items=order_items,
+            order_items=order_items_output_dtos,
         )
