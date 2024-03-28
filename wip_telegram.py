@@ -43,7 +43,7 @@ async def unknown(update, context):
 async def main():
     bot_token = os.environ["BOT_TOKEN"]
     webhook_url = os.environ["WEBHOOK_URL"]
-    
+
     # Create the Application object and configure the webhook
     application = Application.builder().token(bot_token).build()
     webhook_url = f"{webhook_url}/bot"
@@ -52,7 +52,7 @@ async def main():
     # Register the handlers
     start_handler = CommandHandler("start", start)
     menu_handler = CallbackQueryHandler(menu_actions)
-    unknown_handler = MessageHandler(filters.command, unknown)
+    unknown_handler = MessageHandler(filters.COMMAND, unknown)
 
     application.add_handler(start_handler)
     application.add_handler(menu_handler)
