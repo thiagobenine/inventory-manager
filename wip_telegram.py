@@ -46,7 +46,6 @@ async def main():
 
     # Create the Application object and configure the webhook
     application = Application.builder().token(bot_token).build()
-    webhook_url = f"{webhook_url}/bot"
     await application.bot.set_webhook(url=webhook_url)
 
     # Register the handlers
@@ -62,13 +61,8 @@ async def main():
     await application.run_webhook(
         listen='0.0.0.0',
         port=int(os.environ.get('PORT', '8443')),
-        url_path='bot',
         webhook_url=webhook_url
     )
-
-    # Keep the program running
-    await application.start()
-    await application.updater.idle()
 
 
 if __name__ == "__main__":
