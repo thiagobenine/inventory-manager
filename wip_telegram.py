@@ -13,7 +13,7 @@ bot_token = os.environ["BOT_TOKEN"]
 webhook_url = os.environ["WEBHOOK_URL"]
 
 # Create the Updater object and configure the webhook
-updater = Updater(token=bot_token, use_context=True)
+updater = Updater(bot_token, use_context=True)
 
 # Get the dispatcher object to register handlers
 dispatcher = updater.dispatcher
