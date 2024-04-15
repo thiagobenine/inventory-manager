@@ -1,6 +1,5 @@
-from pydantic import BaseModel
+from src.domain.entities.entity import Entity
 
 
-class Client(BaseModel):
-    id: int
+class Client(Entity):
     name: str

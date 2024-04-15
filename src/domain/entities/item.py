@@ -1,10 +1,7 @@
-from uuid import UUID, uuid4
-
-from pydantic import BaseModel, Field
+from src.domain.entities.entity import Entity
 
 
-class Item(BaseModel):
-    id: UUID = Field(default_factory=uuid4)
+class Item(Entity):
     name: str
     inventory_quantity: int
 

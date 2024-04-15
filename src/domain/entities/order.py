@@ -4,6 +4,8 @@ from uuid import UUID, uuid4
 from pydantic import BaseModel, Field
 
 from src.domain.entities.client import Client
+from src.domain.entities.entity import Entity
+from src.domain.entities.item import Item
 
 
 class OrderItem(BaseModel):
@@ -11,8 +13,7 @@ class OrderItem(BaseModel):
     item_id: UUID
 
 
-class Order(BaseModel):
-    id: UUID = Field(default_factory=uuid4)
+class Order(Entity):
     external_id: int
     created_at: datetime
     updated_at: datetime
