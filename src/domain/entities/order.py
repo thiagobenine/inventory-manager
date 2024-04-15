@@ -1,7 +1,6 @@
 from datetime import datetime
-from uuid import UUID, uuid4
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 from src.domain.entities.client import Client
 from src.domain.entities.entity import Entity
@@ -10,7 +9,7 @@ from src.domain.entities.item import Item
 
 class OrderItem(BaseModel):
     quantity: int
-    item_id: UUID
+    item: Item
 
 
 class Order(Entity):
@@ -19,7 +18,7 @@ class Order(Entity):
     updated_at: datetime
     is_cancelled: bool
     client: Client
-    items: list[OrderItem]
+    order_items: list[OrderItem]
 
     def cancel(self):
         self.is_cancelled = True
