@@ -22,5 +22,5 @@ class OrderFactory:
             ),
             is_cancelled=False,
             client=client,
-            items=order_items,
+            order_items=order_items,
         )
