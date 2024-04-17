@@ -3,7 +3,7 @@ import mongomock
 
 
 class MongoConnection:
-    _instance = None
+    _instance: ClassVar[Optional[MongoConnection]] = None
 
     def __new__(cls, *args, **kwargs):
         if cls._instance is None:
