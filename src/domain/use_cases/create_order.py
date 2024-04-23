@@ -1,6 +1,7 @@
+from src.domain.entities.client import Client
 from src.domain.entities.item import Item
 from src.domain.entities.order import OrderItem
-from src.domain.exceptions import ClientNotFoundError, ItemsNotFoundByNameError
+from src.domain.exceptions import ItemsNotFoundByNameError
 from src.domain.factories.order import OrderFactory
 from src.domain.ports.inbound.orders.dtos import (
     CreateOrderInputDTO,
@@ -44,7 +45,8 @@ class CreateOrderUseCase:
             input_dto.client_name
         )
         if not client:
-            raise ClientNotFoundError(input_dto.client_name)
+            client = Client(name=input_dto.client_name)
+            self.client_repository.save(client)
 
         items_names_from_dto = [
             item_input.item_name for item_input in input_dto.items
@@ -58,15 +60,12 @@ class CreateOrderUseCase:
         )
 
         item_map_by_name = {item.name: item for item in items_from_repository}
-        item_map_by_id = {item.id: item for item in items_from_repository}
 
         order_items = []
         for item_input in input_dto.items:
             item = item_map_by_name[item_input.item_name]
             item.decrease_inventory_quantity(item_input.quantity)
-            order_item = OrderItem(
-                item_id=item.id, quantity=item_input.quantity
-            )
+            order_item = OrderItem(item=item, quantity=item_input.quantity)
             order_items.append(order_item)
 
         order = OrderFactory.build(input_dto, client, order_items)
@@ -80,12 +79,10 @@ class CreateOrderUseCase:
             external_order_id=order.external_id,
             order_items=[
                 CreateOrderItemOutputDTO(
-                    item_name=item_map_by_id[order_item.item_id].name,
+                    item_name=order_item.item.name,
                     quantity=order_item.quantity,
-                    inventory_quantity=item_map_by_id[
-                        order_item.item_id
-                    ].inventory_quantity,
+                    inventory_quantity=order_item.item.inventory_quantity,
                 )
-                for order_item in order.items
+                for order_item in order.order_items
             ],
         )

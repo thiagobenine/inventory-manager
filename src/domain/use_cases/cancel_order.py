@@ -1,8 +1,6 @@
 from datetime import datetime
-from uuid import UUID
 
-from src.domain.entities.item import Item
-from src.domain.exceptions import ItemsNotFoundByIdError, OrderNotFoundError
+from src.domain.exceptions import OrderNotFoundError
 from src.domain.ports.inbound.orders.dtos import (
     CancelOrderInputDTO,
     CancelOrderItemOutputDTO,
@@ -23,53 +21,25 @@ class CancelOrderUseCase:
         self.order_repository = order_repository
         self.item_repository = item_repository
 
-    @staticmethod
-    def _validate_no_missing_items(
-        items_ids_from_order: list[UUID], items_from_repository: list[Item]
-    ):
-        is_any_item_missing = len(items_from_repository) != len(
-            items_ids_from_order
-        )
-        if is_any_item_missing:
-            found_item_ids = {item.id for item in items_from_repository}
-            missing_items_ids = set(items_ids_from_order) - found_item_ids
-            missing_items_ids_string = [
-                str(item_id) for item_id in missing_items_ids
-            ]
-            raise ItemsNotFoundByIdError(missing_items_ids_string)
-
     def execute(self, input_dto: CancelOrderInputDTO) -> CancelOrderOutputDTO:
         order = self.order_repository.find_order_by_id(input_dto.order_id)
         if not order:
             raise OrderNotFoundError(input_dto.order_id)
 
-        items_ids_from_order = [
-            order_item.item_id for order_item in order.items
-        ]
-        items_from_repository = self.item_repository.find_items_by_ids(
-            items_ids_from_order
-        )
-
-        self._validate_no_missing_items(
-            items_ids_from_order, items_from_repository
-        )
-
-        item_map_by_id = {item.id: item for item in items_from_repository}
-
         order_items_output_dtos = []
-        for order_item in order.items:
-            item = item_map_by_id[order_item.item_id]
+
+        for order_item in order.order_items:
             order_items_output_dtos.append(
                 CancelOrderItemOutputDTO(
-                    item_name=item.name,
+                    item_name=order_item.item.name,
                     quantity=order_item.quantity,
-                    inventory_quantity=item.inventory_quantity,
+                    inventory_quantity=order_item.item.inventory_quantity,
                 )
             )
 
         items_to_save = []
-        for order_item in order.items:
-            item = item_map_by_id[order_item.item_id]
+        for order_item in order.order_items:
+            item = order_item.item
             item.increase_inventory_quantity(order_item.quantity)
             items_to_save.append(item)
         self.item_repository.save_all(items_to_save)

@@ -1,13 +1,8 @@
-from uuid import UUID
+from bson import ObjectId
 
 
 class DomainException(Exception):
     pass
-
-
-class ClientNotFoundError(DomainException):
-    def __init__(self, client_name: str):
-        super().__init__(f"Client not found: {client_name}")
 
 
 class ItemNotFoundByNameError(DomainException):
@@ -31,5 +26,5 @@ class ItemAlreadyExistsError(DomainException):
 
 
 class OrderNotFoundError(DomainException):
-    def __init__(self, order_id: UUID):
+    def __init__(self, order_id: ObjectId):
         super().__init__(f"Order not found: {order_id}")

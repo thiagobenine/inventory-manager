@@ -1,7 +1,7 @@
 from unittest.mock import Mock
-from uuid import UUID
 
 import pytest
+from bson import ObjectId
 
 from src.domain.entities.item import Item
 from src.domain.exceptions import ItemAlreadyExistsError
@@ -40,7 +40,7 @@ class TestAddItemUseCase:
         saved_item = item_repository.save.call_args[0][0]
         assert saved_item.name == item_name
         assert saved_item.inventory_quantity == inventory_quantity
-        assert isinstance(saved_item.id, UUID)
+        assert isinstance(saved_item.id, ObjectId)
 
     def test_add_item_use_case_with_negative_quantity(self, item_repository):
         # Arrange
@@ -65,7 +65,7 @@ class TestAddItemUseCase:
         saved_item = item_repository.save.call_args[0][0]
         assert saved_item.name == item_name
         assert saved_item.inventory_quantity == inventory_quantity
-        assert isinstance(saved_item.id, UUID)
+        assert isinstance(saved_item.id, ObjectId)
 
     def test_add_item_use_case_existing_item_raises_error(
         self, item_repository
