@@ -1,6 +1,5 @@
-from uuid import UUID
-
 from pydantic import BaseModel
+from pydantic_mongo import ObjectIdField
 
 
 class OrderItemInputDTO(BaseModel):
@@ -22,14 +21,14 @@ class CreateOrderItemOutputDTO(BaseModel):
 
 
 class CreateOrderOutputDTO(BaseModel):
-    order_id: int
+    order_id: ObjectIdField
     client_name: str
     external_order_id: int
     order_items: list[CreateOrderItemOutputDTO]
 
 
 class CancelOrderInputDTO(BaseModel):
-    order_id: UUID
+    order_id: ObjectIdField
 
 
 class CancelOrderItemOutputDTO(BaseModel):
@@ -39,7 +38,7 @@ class CancelOrderItemOutputDTO(BaseModel):
 
 
 class CancelOrderOutputDTO(BaseModel):
-    order_id: UUID
+    order_id: ObjectIdField
     client_name: str
     external_order_id: int
     order_items: list[CancelOrderItemOutputDTO]
