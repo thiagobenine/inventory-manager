@@ -1,7 +1,7 @@
 from unittest.mock import Mock
-from uuid import UUID
 
 import pytest
+from bson import ObjectId
 
 from src.domain.entities.item import Item
 from src.domain.exceptions import ItemNotFoundByNameError
@@ -46,7 +46,7 @@ class TestSetInventoryQuantityUseCase:
         saved_item = item_repository.save.call_args[0][0]
         assert saved_item.name == item_name
         assert saved_item.inventory_quantity == inventory_quantity
-        assert isinstance(saved_item.id, UUID)
+        assert isinstance(saved_item.id, ObjectId)
 
     def test_set_inventory_quantity_use_case_with_negative_quantity(
         self, item_repository
@@ -75,7 +75,7 @@ class TestSetInventoryQuantityUseCase:
         saved_item = item_repository.save.call_args[0][0]
         assert saved_item.name == item_name
         assert saved_item.inventory_quantity == inventory_quantity
-        assert isinstance(saved_item.id, UUID)
+        assert isinstance(saved_item.id, ObjectId)
 
     def test_set_inventory_quantity_use_case_unexistent_item_raises_error(
         self, item_repository
