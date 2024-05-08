@@ -10,7 +10,7 @@ class OrderItemInputDTO(BaseModel):
 class CreateOrderInputDTO(BaseModel):
     client_name: str
     external_order_id: int
-    created_at: str
+    external_created_at: str
     items: list[OrderItemInputDTO]
 
 

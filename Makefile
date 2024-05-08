@@ -1,4 +1,4 @@
-export PYTHONPATH=$(shell pwd)/src/
+export PYTHONPATH=$(shell pwd)
 
 run:
 	@python src/main.py

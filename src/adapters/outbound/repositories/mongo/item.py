@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from pymongo import InsertOne, UpdateOne
+
 from src.adapters.outbound.repositories.mongo.connection import MongoConnection
 from src.adapters.outbound.repositories.mongo.documents.item import (
     ItemDocument,
@@ -44,14 +46,22 @@ class MongoItemRepository:
         item_doc.save()
 
     def save_all(self, items: list[Item]) -> None:
-        ItemDocument.objects.insert(
-            [
-                ItemDocument(
-                    id=item.id,
-                    name=item.name,
-                    inventory_quantity=item.inventory_quantity,
+        bulk_operations = []
+        for item in items:
+            existing_item = ItemDocument.objects(name=item.name).first()
+            if existing_item:
+                update_operation = UpdateOne(
+                    {"_id": existing_item.id},
+                    {"$set": {"inventory_quantity": item.inventory_quantity}},
                 )
-                for item in items
-            ],
-            load_bulk=False,
-        )
+                bulk_operations.append(update_operation)
+            else:
+                new_item = {
+                    "_id": item.id,
+                    "name": item.name,
+                    "inventory_quantity": item.inventory_quantity,
+                }
+                insert_operation = InsertOne(new_item)
+                bulk_operations.append(insert_operation)
+
+        ItemDocument._get_collection().bulk_write(bulk_operations)

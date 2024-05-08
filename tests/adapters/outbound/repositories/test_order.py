@@ -45,6 +45,7 @@ class TestMongoOrderRepository:
             external_id=1,
             client=Client(id=test_client.id, name=test_client.name),
             order_items=[test_order_item],
+            external_created_at="17:54",
             created_at=datetime(2023, 6, 7, 10, 0, 0),
             updated_at=datetime(2023, 6, 7, 10, 0, 0),
             is_cancelled=False,
@@ -59,6 +60,7 @@ class TestMongoOrderRepository:
         assert saved_order.external_id == 1
         assert saved_order.client.id == test_client.id
         assert saved_order.client.name == "Carlos"
+        assert saved_order.external_created_at == "17:54"
         assert saved_order.created_at == datetime(2023, 6, 7, 10, 0, 0)
         assert saved_order.updated_at == datetime(2023, 6, 7, 10, 0, 0)
         assert len(saved_order.order_items) == 1
@@ -80,6 +82,7 @@ class TestMongoOrderRepository:
             external_id=2,
             client=test_client,
             order_items=[test_order_item],
+            external_created_at="17:54",
             created_at=datetime(2023, 6, 7, 10, 0, 0),
             updated_at=datetime(2023, 6, 7, 10, 0, 0),
             is_cancelled=False,
@@ -94,6 +97,7 @@ class TestMongoOrderRepository:
         assert found_order.external_id == 2
         assert found_order.client.id == test_client.id
         assert found_order.client.name == "Joana"
+        assert found_order.external_created_at == "17:54"
         assert found_order.created_at == datetime(2023, 6, 7, 10, 0, 0)
         assert found_order.updated_at == datetime(2023, 6, 7, 10, 0, 0)
         assert len(found_order.order_items) == 1

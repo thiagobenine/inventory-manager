@@ -12,11 +12,11 @@ class AddItemOutputDTO(BaseModel):
 
 
 class RemoveItemInputDTO(BaseModel):
-    name: str
+    item_name: str
 
 
 class RemoveItemOutputDTO(BaseModel):
-    name: str
+    item_name: str
 
 
 class SetInventoryQuantityInputDTO(BaseModel):
