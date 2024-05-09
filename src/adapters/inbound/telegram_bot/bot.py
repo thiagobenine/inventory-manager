@@ -44,16 +44,17 @@ class ConversationState(int, Enum):
 class TelegramBotCommandHandler:
     def __init__(
         self,
-        item_repository=ItemRepositoryInterface,
-        order_repository=OrderRepositoryInterface,
-        client_repository=ClientRepositoryInterface,
+        item_repository: ItemRepositoryInterface,
+        order_repository: OrderRepositoryInterface,
+        client_repository: ClientRepositoryInterface,
     ):
         self.item_repository = item_repository
         self.order_repository = order_repository
         self.client_repository = client_repository
+        self.telegram_bot_controller = TelegramBotController()
 
     async def start_command(
-        self, update: Update, context: ContextTypes.DEFAULT_TYPE
+        self, update: Update, context: ContextTypes = ContextTypes.DEFAULT_TYPE
     ) -> int:
         keyboard = [
             [
@@ -144,7 +145,7 @@ class TelegramBotCommandHandler:
         print(f"Raw input: {raw_input}")
 
         add_item_use_case = AddItemUseCase(self.item_repository)
-        output_message = TelegramBotController.add_item(
+        output_message = self.telegram_bot_controller.add_item(
             raw_input, add_item_use_case
         )
 
@@ -162,7 +163,7 @@ class TelegramBotCommandHandler:
         print(f"Raw input: {raw_input}")
 
         remove_item_use_case = RemoveItemUseCase(self.item_repository)
-        output_message = TelegramBotController.remove_item(
+        output_message = self.telegram_bot_controller.remove_item(
             raw_input, remove_item_use_case
         )
 
@@ -181,7 +182,7 @@ class TelegramBotCommandHandler:
         set_inventory_quantity_use_case = SetInventoryQuantityUseCase(
             self.item_repository
         )
-        output_message = TelegramBotController.set_inventory_quantity(
+        output_message = self.telegram_bot_controller.set_inventory_quantity(
             raw_input, set_inventory_quantity_use_case
         )
 
@@ -200,7 +201,7 @@ class TelegramBotCommandHandler:
         create_order_use_case = CreateOrderUseCase(
             self.client_repository, self.item_repository, self.order_repository
         )
-        output_message = TelegramBotController.create_order(
+        output_message = self.telegram_bot_controller.create_order(
             raw_input, create_order_use_case
         )
 
@@ -219,7 +220,7 @@ class TelegramBotCommandHandler:
         cancel_order_use_case = CancelOrderUseCase(
             self.order_repository, self.item_repository
         )
-        output_message = TelegramBotController.cancel_order(
+        output_message = self.telegram_bot_controller.cancel_order(
             raw_input, cancel_order_use_case
         )
 

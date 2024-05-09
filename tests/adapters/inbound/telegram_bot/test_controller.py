@@ -60,7 +60,7 @@ class TestTelegramBotController:
         )
 
         # Assert
-        assert output_message == "Ocorreu um erro inesperado."
+        assert output_message == "Ocorreu um erro inesperado\\."
 
     def test_remove_item_controller_with_success(
         self, controller, mongo_connection
@@ -98,7 +98,7 @@ class TestTelegramBotController:
         )
 
         # Assert
-        assert output_message == "Ocorreu um erro inesperado."
+        assert output_message == "Ocorreu um erro inesperado\\."
 
     def test_set_inventory_quantity_controller_with_success(
         self, controller, mongo_connection
@@ -137,7 +137,7 @@ class TestTelegramBotController:
         )
 
         # Assert
-        assert output_message == "Ocorreu um erro inesperado."
+        assert output_message == "Ocorreu um erro inesperado\\."
 
     @pytest.mark.parametrize(
         "raw_input",
@@ -206,7 +206,7 @@ class TestTelegramBotController:
         )
 
         # Assert
-        assert output_message == "Ocorreu um erro inesperado."
+        assert output_message == "Ocorreu um erro inesperado\\."
 
     def test_cancel_order_controller_with_success(
         self, controller, mongo_connection
@@ -262,4 +262,4 @@ class TestTelegramBotController:
         )
 
         # Assert
-        assert output_message == "Ocorreu um erro inesperado."
+        assert output_message == "Ocorreu um erro inesperado\\."

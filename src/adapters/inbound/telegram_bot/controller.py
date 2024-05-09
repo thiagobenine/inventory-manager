@@ -43,7 +43,7 @@ class TelegramBotController:
                 return func(self, *args, **kwargs)
             except Exception as e:
                 print(f"Error in {func.__name__}: {e!s}")
-                return "Ocorreu um erro inesperado."
+                return "Ocorreu um erro inesperado\\."
 
         return wrapper
 
