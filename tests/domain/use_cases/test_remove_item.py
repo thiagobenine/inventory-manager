@@ -23,7 +23,7 @@ class TestRemoveItemUseCase:
         item_repository.find_item_by_name.return_value = Item(
             name=item_name, inventory_quantity=inventory_quantity
         )
-        input_dto = RemoveItemInputDTO(name=item_name)
+        input_dto = RemoveItemInputDTO(item_name=item_name)
         use_case = RemoveItemUseCase(item_repository)
 
         # Act
@@ -31,7 +31,7 @@ class TestRemoveItemUseCase:
 
         # Assert
         assert isinstance(output_dto, RemoveItemOutputDTO)
-        assert output_dto.name == item_name
+        assert output_dto.item_name == item_name
 
         item_repository.find_item_by_name.assert_called_once_with(item_name)
         item_repository.remove_item_by_name.assert_called_once_with(item_name)
@@ -42,7 +42,7 @@ class TestRemoveItemUseCase:
         # Arrange
         item_name = "Marmita Fit de Frango"
         item_repository.find_item_by_name.return_value = None
-        input_dto = RemoveItemInputDTO(name=item_name)
+        input_dto = RemoveItemInputDTO(item_name=item_name)
         use_case = RemoveItemUseCase(item_repository)
 
         # Act & Assert

@@ -26,17 +26,6 @@ class CancelOrderUseCase:
         if not order:
             raise OrderNotFoundError(input_dto.order_id)
 
-        order_items_output_dtos = []
-
-        for order_item in order.order_items:
-            order_items_output_dtos.append(
-                CancelOrderItemOutputDTO(
-                    item_name=order_item.item.name,
-                    quantity=order_item.quantity,
-                    inventory_quantity=order_item.item.inventory_quantity,
-                )
-            )
-
         items_to_save = []
         for order_item in order.order_items:
             item = order_item.item
@@ -46,6 +35,16 @@ class CancelOrderUseCase:
 
         order.cancel()
         self.order_repository.save(order)
+
+        order_items_output_dtos = []
+        for order_item in order.order_items:
+            order_items_output_dtos.append(
+                CancelOrderItemOutputDTO(
+                    item_name=order_item.item.name,
+                    quantity=order_item.quantity,
+                    inventory_quantity=order_item.item.inventory_quantity,
+                )
+            )
 
         return CancelOrderOutputDTO(
             order_id=order.id,
