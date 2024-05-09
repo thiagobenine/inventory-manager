@@ -11,6 +11,7 @@ from mongoengine import (
     ListField,
     ObjectIdField,
     ReferenceField,
+    StringField,
 )
 
 from src.adapters.outbound.repositories.mongo.documents.client import (
@@ -25,6 +26,7 @@ class OrderDocument(Document):
     meta: ClassVar[dict] = {"collection": "orders"}
     id = ObjectIdField(primary_key=True, default=lambda: ObjectId())
     external_id = IntField(required=True)
+    external_created_at = StringField(required=True)
     created_at = DateTimeField(default=datetime.now)
     updated_at = DateTimeField(default=datetime.now)
     is_cancelled = BooleanField(default=False)

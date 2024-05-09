@@ -55,6 +55,7 @@ class TestCreateOrderUseCase:
         input_dto = CreateOrderInputDTO(
             client_name="Tirulipa",
             external_order_id=1234,
+            external_created_at="17:54",
             created_at="2023-06-07T10:00:00",
             items=[
                 OrderItemInputDTO(item_name="Item 1", quantity=2),
@@ -107,6 +108,7 @@ class TestCreateOrderUseCase:
         input_dto = CreateOrderInputDTO(
             client_name="Tirulipa",
             external_order_id=1234,
+            external_created_at="17:54",
             created_at="2023-06-07T10:00:00",
             items=[OrderItemInputDTO(item_name="Item 1", quantity=15)],
         )
@@ -143,6 +145,7 @@ class TestCreateOrderUseCase:
 
         input_dto = CreateOrderInputDTO(
             client_name="Tirulipa Inexistente",
+            external_created_at="17:54",
             external_order_id=1234,
             created_at="2023-06-07T10:00:00",
             items=[
@@ -187,6 +190,7 @@ class TestCreateOrderUseCase:
 
         input_dto = CreateOrderInputDTO(
             client_name="Tirulipa",
+            external_created_at="17:54",
             external_order_id=1234,
             created_at="2023-06-07T10:00:00",
             items=[OrderItemInputDTO(item_name="Item 1", quantity=2)],

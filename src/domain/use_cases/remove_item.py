@@ -11,11 +11,13 @@ class RemoveItemUseCase:
         self.item_repository = item_repository
 
     def execute(self, input_dto: RemoveItemInputDTO) -> RemoveItemOutputDTO:
-        existing_item = self.item_repository.find_item_by_name(input_dto.name)
+        existing_item = self.item_repository.find_item_by_name(
+            input_dto.item_name
+        )
         if not existing_item:
-            raise ItemNotFoundByNameError(input_dto.name)
+            raise ItemNotFoundByNameError(input_dto.item_name)
 
         self.item_repository.remove_item_by_name(existing_item.name)
         return RemoveItemOutputDTO(
-            name=existing_item.name,
+            item_name=existing_item.name,
         )

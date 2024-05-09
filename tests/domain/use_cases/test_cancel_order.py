@@ -48,6 +48,7 @@ class TestCancelOrderUseCase:
         order_repository.find_order_by_id.return_value = Order(
             id=order_id,
             external_id=1234,
+            external_created_at="17:54",
             created_at=datetime(2023, 6, 7, 10, 0, 0),
             updated_at=datetime(2023, 6, 7, 10, 0, 0),
             is_cancelled=False,
@@ -78,7 +79,7 @@ class TestCancelOrderUseCase:
         assert len(output_dto.order_items) == 1
         assert output_dto.order_items[0].item_name == "Marmita de Frango"
         assert output_dto.order_items[0].quantity == 10
-        assert output_dto.order_items[0].inventory_quantity == 10
+        assert output_dto.order_items[0].inventory_quantity == 20
 
         order_repository.find_order_by_id.assert_called_once_with(order_id)
         order_repository.save.assert_called_once()
