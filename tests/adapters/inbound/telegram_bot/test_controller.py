@@ -14,6 +14,7 @@ from src.domain.entities.order import Order, OrderItem
 from src.domain.use_cases.add_item import AddItemUseCase
 from src.domain.use_cases.cancel_order import CancelOrderUseCase
 from src.domain.use_cases.create_order import CreateOrderUseCase
+from src.domain.use_cases.list_items import ListItemsUseCase
 from src.domain.use_cases.remove_item import RemoveItemUseCase
 from src.domain.use_cases.set_inventory_quantity import (
     SetInventoryQuantityUseCase,
@@ -61,6 +62,28 @@ class TestTelegramBotController:
 
         # Assert
         assert output_message == "Ocorreu um erro inesperado\\."
+
+    def test_list_items_controller_with_success(
+        self, controller, mongo_connection
+    ):
+        # Arrange
+        item_repository = MongoItemRepository(mongo_connection)
+        test_item = Item(
+            name="arroz integral e strogonoff de carne", inventory_quantity=100
+        )
+        item_repository.save(test_item)
+
+        # Act
+        output_message = controller.list_items(
+            ListItemsUseCase(item_repository)
+        )
+
+        # Assert
+        assert "Lista de Marmitas:\n\n" in output_message
+        assert (
+            "*Nome:* Arroz integral e strogonoff de carne\n" in output_message
+        )
+        assert "*Estoque:* 100\n" in output_message
 
     def test_remove_item_controller_with_success(
         self, controller, mongo_connection

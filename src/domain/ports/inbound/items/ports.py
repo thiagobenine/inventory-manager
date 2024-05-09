@@ -3,6 +3,7 @@ from typing import Protocol
 from src.domain.ports.inbound.items.dtos import (
     AddItemInputDTO,
     AddItemOutputDTO,
+    ListItemsOutputDTO,
     RemoveItemInputDTO,
     RemoveItemOutputDTO,
     SetInventoryQuantityInputDTO,
@@ -12,6 +13,10 @@ from src.domain.ports.inbound.items.dtos import (
 
 class AddItemPort(Protocol):
     def execute(self, input_dto: AddItemInputDTO) -> AddItemOutputDTO: ...
+
+
+class ListItemsPort(Protocol):
+    def execute(self) -> ListItemsOutputDTO: ...
 
 
 class RemoveItemPort(Protocol):
