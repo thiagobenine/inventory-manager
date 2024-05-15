@@ -17,6 +17,7 @@ from src.domain.ports.inbound.orders.dtos import (
 from src.domain.use_cases.add_item import AddItemUseCase
 from src.domain.use_cases.cancel_order import CancelOrderUseCase
 from src.domain.use_cases.create_order import CreateOrderUseCase
+from src.domain.use_cases.list_items import ListItemsUseCase
 from src.domain.use_cases.remove_item import RemoveItemUseCase
 from src.domain.use_cases.set_inventory_quantity import (
     SetInventoryQuantityUseCase,
@@ -61,6 +62,19 @@ Marmita registrada com sucesso\\!
 
 *Nome:* {output_dto.name.capitalize()}
 *Estoque:* {output_dto.inventory_quantity}
+"""
+        return output_message
+
+    @staticmethod
+    def list_items(list_items_use_case: ListItemsUseCase) -> str:
+        output_dto = list_items_use_case.execute()
+        output_message = """
+Lista de Marmitas:
+"""
+        for item in output_dto.items:
+            output_message += f"""
+*Nome:* {item.item_name.capitalize()}
+*Estoque:* {item.inventory_quantity}
 """
         return output_message
 

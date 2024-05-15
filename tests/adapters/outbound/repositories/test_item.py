@@ -57,6 +57,21 @@ class TestMongoItemRepository:
         assert found_items[1].inventory_quantity == 4
         assert ItemDocument.objects.count() == 2
 
+    def test_get_all(self, repository):
+        # Arrange
+        ItemDocument(name="Marmita de Carne", inventory_quantity=8).save()
+        ItemDocument(name="Marmita de Frango", inventory_quantity=2).save()
+
+        # Act
+        all_items = repository.get_all()
+
+        # Assert
+        assert len(all_items) == 2
+        assert all_items[0].name == "Marmita de Carne"
+        assert all_items[0].inventory_quantity == 8
+        assert all_items[1].name == "Marmita de Frango"
+        assert all_items[1].inventory_quantity == 2
+
     def test_remove_item_by_name(self, repository):
         # Arrange
         ItemDocument(name="Marmita de Carne", inventory_quantity=8).save()

@@ -34,6 +34,17 @@ class MongoItemRepository:
             for doc in documents
         ]
 
+    def get_all(self) -> list[Item]:
+        documents = ItemDocument.objects()
+        return [
+            Item(
+                id=doc.id,
+                name=doc.name,
+                inventory_quantity=doc.inventory_quantity,
+            )
+            for doc in documents
+        ]
+
     def remove_item_by_name(self, item_name: str) -> None:
         ItemDocument.objects(name=item_name).delete()
 

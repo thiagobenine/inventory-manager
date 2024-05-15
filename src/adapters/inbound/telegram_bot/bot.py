@@ -4,6 +4,7 @@ from telegram import (
     ForceReply,
     InlineKeyboardButton,
     InlineKeyboardMarkup,
+    MaybeInaccessibleMessage,
     Update,
 )
 from telegram.ext import (
@@ -26,6 +27,7 @@ from src.domain.ports.outbound.repositories.order import (
 from src.domain.use_cases.add_item import AddItemUseCase
 from src.domain.use_cases.cancel_order import CancelOrderUseCase
 from src.domain.use_cases.create_order import CreateOrderUseCase
+from src.domain.use_cases.list_items import ListItemsUseCase
 from src.domain.use_cases.remove_item import RemoveItemUseCase
 from src.domain.use_cases.set_inventory_quantity import (
     SetInventoryQuantityUseCase,
@@ -60,6 +62,11 @@ class TelegramBotCommandHandler:
             [
                 InlineKeyboardButton(
                     "Registrar Nova Marmita", callback_data="add_item"
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    "Listar Marmitas", callback_data="list_items"
                 )
             ],
             [
@@ -103,6 +110,9 @@ class TelegramBotCommandHandler:
                 reply_markup=ForceReply(selective=True),
             )
             return ConversationState.WAITING_ADD_ITEM
+        elif query.data == "list_items":
+            await self.handle_list_items(query.message)
+            return ConversationHandler.END
         elif query.data == "remove_item":
             await query.message.reply_text(
                 "Você escolheu remover uma marmita. "
@@ -153,6 +163,40 @@ class TelegramBotCommandHandler:
             output_message,
             parse_mode="MarkdownV2",
         )
+
+        return ConversationHandler.END
+
+    async def handle_list_items(
+        self, message: MaybeInaccessibleMessage
+    ) -> int:
+        list_items_use_case = ListItemsUseCase(self.item_repository)
+        output_message = self.telegram_bot_controller.list_items(
+            list_items_use_case
+        )
+
+        # Dividindo o output_message respeitando as seções de cada marmita
+        max_length = 4096
+        parts = []
+        last_cut_index = 0
+
+        # Encontrar os índices seguros para cortar a mensagem
+        while last_cut_index < len(output_message):
+            if len(output_message) - last_cut_index <= max_length:
+                parts.append(output_message[last_cut_index:])
+                break
+            slice_index = output_message.rfind(
+                "\n\n", last_cut_index, last_cut_index + max_length
+            )
+            parts.append(output_message[last_cut_index:slice_index])
+            last_cut_index = (
+                slice_index + 2
+            )  # Pulando o '\n\n' para começar a próxima parte
+
+        for part in parts:
+            await message.reply_text(
+                part,
+                parse_mode="MarkdownV2",
+            )
 
         return ConversationHandler.END
 
