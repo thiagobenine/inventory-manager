@@ -9,7 +9,6 @@ from src.adapters.outbound.repositories.mongo.connection import (
 def mongo_connection():
     connection = MongoMockConnection(
         "mongodb://localhost",
-        "testdb",
     )
     connection.connect()
     yield connection
