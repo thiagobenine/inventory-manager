@@ -72,19 +72,6 @@ class TelegramBotController:
         return output_message
 
     @staticmethod
-    def list_items(list_items_use_case: ListItemsUseCase) -> str:
-        output_dto = list_items_use_case.execute()
-        output_message = """
-Lista de Marmitas:
-"""
-        for item in output_dto.items:
-            output_message += f"""
-*Nome:* {item.item_name.capitalize()}
-*Estoque:* {item.inventory_quantity}
-"""
-        return output_message
-
-    @staticmethod
     def remove_item(
         raw_input: str, remove_item_use_case: RemoveItemUseCase
     ) -> str:
