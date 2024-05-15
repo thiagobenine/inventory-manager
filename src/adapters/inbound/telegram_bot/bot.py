@@ -174,29 +174,10 @@ class TelegramBotCommandHandler:
             list_items_use_case
         )
 
-        # Dividindo o output_message respeitando as seções de cada marmita
-        max_length = 4096
-        parts = []
-        last_cut_index = 0
-
-        # Encontrar os índices seguros para cortar a mensagem
-        while last_cut_index < len(output_message):
-            if len(output_message) - last_cut_index <= max_length:
-                parts.append(output_message[last_cut_index:])
-                break
-            slice_index = output_message.rfind(
-                "\n\n", last_cut_index, last_cut_index + max_length
-            )
-            parts.append(output_message[last_cut_index:slice_index])
-            last_cut_index = (
-                slice_index + 2
-            )  # Pulando o '\n\n' para começar a próxima parte
-
-        for part in parts:
-            await message.reply_text(
-                part,
-                parse_mode="MarkdownV2",
-            )
+        await message.reply_text(
+            output_message,
+            parse_mode="MarkdownV2",
+        )
 
         return ConversationHandler.END
 
