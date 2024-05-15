@@ -42,10 +42,11 @@ class TestTelegramBotController:
         )
 
         # Assert
+        assert "Marmita registrada com sucesso\\!\n\n" in output_message
         assert (
-            output_message == "\nMarmita registrada com sucesso\\!"
-            "\n\n*Nome:* Arroz integral e strogonoff de carne\n*Estoque:* 10\n"
+            "*Nome:* Arroz integral e strogonoff de carne\n" in output_message
         )
+        assert "*Estoque:* 10\n" in output_message
 
     def test_add_item_controller_with_error(
         self, controller, mongo_connection
@@ -79,10 +80,8 @@ class TestTelegramBotController:
         )
 
         # Assert
-        assert (
-            output_message == "\nMarmita removida com sucesso\\!"
-            "\n\n*Nome:* Arroz integral e strogonoff de carne\n"
-        )
+        assert "Marmita removida com sucesso\\!\n\n" in output_message
+        assert "*Nome:* Arroz integral e strogonoff de carne" in output_message
 
     def test_remove_item_controller_with_error(
         self, controller, mongo_connection
@@ -117,11 +116,11 @@ class TestTelegramBotController:
         )
 
         # Assert
+        assert "Estoque registrado com sucesso\\!\n\n" in output_message
         assert (
-            output_message == "\nEstoque registrado com sucesso\\!"
-            "\n\n*Nome:* Arroz integral e strogonoff de carne"
-            "\n*Novo Estoque:* 10\n"
+            "*Nome:* Arroz integral e strogonoff de carne\n" in output_message
         )
+        assert "*Novo Estoque:* 10" in output_message
 
     def test_set_inventory_quantity_controller_with_error(
         self, controller, mongo_connection
@@ -169,16 +168,17 @@ class TestTelegramBotController:
         )
 
         # Assert
-        assert "\nPedido registrado com sucesso\\!\n\n" in output_message
+        assert "Pedido registrado com sucesso\\!\n\n" in output_message
         assert "*ID do Pedido:*" in output_message
-        assert "*Cliente:* Rafaela de paula" in output_message
-        assert "*Marmitas:*" in output_message
+        assert "*Cliente:* Rafaela de paula\n" in output_message
+        assert "*Marmitas:*\n\n" in output_message
+        assert "*Marmitas de Frango:*\n" in output_message
         assert (
             "\\- *Nome:* Pure de batata doce,hamburguer de frango"
             " e mix de legumes" in output_message
         )
         assert "\\- *Quantidade no Pedido:* 2" in output_message
-        assert "\\- *Novo Estoque:* 98" in output_message
+        assert "\\- *Novo Estoque:* 98\n\n" in output_message
 
     @pytest.mark.parametrize(
         "raw_input",
@@ -213,7 +213,7 @@ class TestTelegramBotController:
     ):
         # Arrange
         item_repository = MongoItemRepository(mongo_connection)
-        test_item = Item(name="Marmita de Carne", inventory_quantity=5)
+        test_item = Item(name="marmita de carne", inventory_quantity=5)
         item_repository.save(test_item)
 
         client_repository = MongoClientRepository(mongo_connection)
@@ -240,13 +240,14 @@ class TestTelegramBotController:
         )
 
         # Assert
-        assert "\nPedido cancelado com sucesso\\!\n\n" in output_message
+        assert "Pedido cancelado com sucesso\\!\n\n" in output_message
         assert "*ID do Pedido:*" in output_message
-        assert "*Cliente:* Joana" in output_message
-        assert "*Marmitas:*" in output_message
+        assert "*Cliente:* Joana\n" in output_message
+        assert "*Marmitas:*\n\n" in output_message
+        assert "*Marmitas de Carne:*\n" in output_message
         assert "\\- *Nome:* Marmita de carne" in output_message
         assert "\\- *Quantidade no Pedido:* 1" in output_message
-        assert "\\- *Novo Estoque:* 6" in output_message
+        assert "\\- *Novo Estoque:* 6\n\n" in output_message
 
     def test_cancel_order_controller_with_error(
         self, controller, mongo_connection

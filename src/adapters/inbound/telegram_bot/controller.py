@@ -4,6 +4,7 @@ import unicodedata
 
 from bson import ObjectId
 
+from src.adapters.inbound.telegram_bot.presenter import TelegramBotPresenter
 from src.domain.ports.inbound.items.dtos import (
     AddItemInputDTO,
     RemoveItemInputDTO,
@@ -56,26 +57,31 @@ class TelegramBotController:
             name=item_name, inventory_quantity=int(inventory_quantity)
         )
         output_dto = add_item_use_case.execute(input_dto)
-        output_message = f"""
-Marmita registrada com sucesso\\!
+        output_message = TelegramBotPresenter.format_add_item_message(
+            output_dto
+        )
+        return output_message
 
-*Nome:* {output_dto.name.capitalize()}
-*Estoque:* {output_dto.inventory_quantity}
-"""
+    @staticmethod
+    def list_items(list_items_use_case: ListItemsUseCase) -> str:
+        output_dto = list_items_use_case.execute()
+        output_message = TelegramBotPresenter.format_list_items_message(
+            output_dto
+        )
         return output_message
 
     @staticmethod
     def remove_item(
         raw_input: str, remove_item_use_case: RemoveItemUseCase
     ) -> str:
-        item_name = raw_input
+        raw_item_name = raw_input
+        item_name = TelegramBotController._clean_text(raw_item_name.strip())
+
         input_dto = RemoveItemInputDTO(item_name=item_name)
         output_dto = remove_item_use_case.execute(input_dto)
-        output_message = f"""
-Marmita removida com sucesso\\!
-
-*Nome:* {output_dto.item_name.capitalize()}
-"""
+        output_message = TelegramBotPresenter.format_remove_item_message(
+            output_dto
+        )
         return output_message
 
     @staticmethod
@@ -83,17 +89,18 @@ Marmita removida com sucesso\\!
         raw_input: str,
         set_inventory_quantity_use_case: SetInventoryQuantityUseCase,
     ) -> str:
-        item_name, inventory_quantity = raw_input.split(",")
+        raw_item_name, inventory_quantity = re.split(r",(?=[^,]*$)", raw_input)
+        item_name = TelegramBotController._clean_text(raw_item_name.strip())
+
         input_dto = SetInventoryQuantityInputDTO(
             item_name=item_name, inventory_quantity=int(inventory_quantity)
         )
         output_dto = set_inventory_quantity_use_case.execute(input_dto)
-        output_message = f"""
-Estoque registrado com sucesso\\!
-
-*Nome:* {output_dto.item_name.capitalize()}
-*Novo Estoque:* {output_dto.inventory_quantity}
-"""
+        output_message = (
+            TelegramBotPresenter.format_set_inventory_quantity_message(
+                output_dto
+            )
+        )
         return output_message
 
     @staticmethod
@@ -121,18 +128,9 @@ Estoque registrado com sucesso\\!
         )
 
         output_dto = create_order_use_case.execute(input_dto)
-        output_message = f"""
-Pedido registrado com sucesso\\!
-
-*ID do Pedido:* {output_dto.order_id}
-*Cliente:* {output_dto.client_name.capitalize()}
-*Marmitas:*"""
-        for order_item in output_dto.order_items:
-            output_message += f"""
-    \\- *Nome:* {order_item.item_name.capitalize()}
-    \\- *Quantidade no Pedido:* {order_item.quantity}
-    \\- *Novo Estoque:* {order_item.inventory_quantity}
-"""
+        output_message = TelegramBotPresenter.format_create_order_message(
+            output_dto
+        )
         return output_message
 
     @staticmethod
@@ -195,18 +193,9 @@ Pedido registrado com sucesso\\!
         order_id = raw_input
         input_dto = CancelOrderInputDTO(order_id=ObjectId(order_id))
         output_dto = cancel_order_use_case.execute(input_dto)
-        output_message = f"""
-Pedido cancelado com sucesso\\!
-
-*ID do Pedido:* {output_dto.order_id}
-*Cliente:* {output_dto.client_name.capitalize()}
-*Marmitas:*"""
-        for order_item in output_dto.order_items:
-            output_message += f"""
-    \\- *Nome:* {order_item.item_name.capitalize()}
-    \\- *Quantidade no Pedido:* {order_item.quantity}
-    \\- *Novo Estoque:* {order_item.inventory_quantity}
-"""
+        output_message = TelegramBotPresenter.format_cancel_order_message(
+            output_dto
+        )
         return output_message
 
     @staticmethod
