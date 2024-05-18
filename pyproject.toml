@@ -20,7 +20,7 @@ python-telegram-bot = {extras = ["webhooks"], version = "^21.1.1"}
 
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^8.0.2"
+pytest = "^8.2.0"
 freezegun = "^1.4.0"
 
 [build-system]
