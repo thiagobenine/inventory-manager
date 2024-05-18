@@ -1,0 +1,16 @@
+version: 2
+
+updates:
+  - package-ecosystem: pip
+    directory: /
+    schedule:
+      interval: weekly
+      day: saturday
+      time: "12:00"
+      timezone: America/Sao_Paulo
+    groups:
+       batch-update:
+          patterns:
+            - "*" 
+          exclude-patterns:
+            - "ruff"
