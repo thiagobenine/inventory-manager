@@ -8,8 +8,8 @@ from src.domain.ports.inbound.items.dtos import (
 from src.domain.ports.inbound.orders.dtos import (
     CancelOrderItemOutputDTO,
     CancelOrderOutputDTO,
-    CreateOrderItemOutputDTO,
-    CreateOrderOutputDTO,
+    CreateGoomerOrderItemOutputDTO,
+    CreateGoomerOrderOutputDTO,
 )
 
 CATEGORY_ITEM_NAME_MAP: dict[str, str] = {
@@ -87,7 +87,7 @@ class TelegramBotPresenter:
 
     @staticmethod
     def format_create_order_message(
-        output_dto: CreateOrderOutputDTO,
+        output_dto: CreateGoomerOrderOutputDTO,
     ) -> str:
         vegan_items = []
         meat_items = []
@@ -163,7 +163,8 @@ class TelegramBotPresenter:
 
     @staticmethod
     def _format_category_for_order_items(
-        items: list[CreateOrderItemOutputDTO] | list[CancelOrderItemOutputDTO],
+        items: list[CreateGoomerOrderItemOutputDTO]
+        | list[CancelOrderItemOutputDTO],
         category_name: str,
     ) -> str:
         if not items:

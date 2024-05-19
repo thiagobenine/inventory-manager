@@ -13,7 +13,7 @@ from src.domain.entities.item import Item
 from src.domain.entities.order import Order, OrderItem
 from src.domain.use_cases.add_item import AddItemUseCase
 from src.domain.use_cases.cancel_order import CancelOrderUseCase
-from src.domain.use_cases.create_order import CreateOrderUseCase
+from src.domain.use_cases.create_goomer_order import CreateGoomerOrderUseCase
 from src.domain.use_cases.list_items import ListItemsUseCase
 from src.domain.use_cases.remove_item import RemoveItemUseCase
 from src.domain.use_cases.set_inventory_quantity import (
@@ -183,9 +183,9 @@ class TestTelegramBotController:
         client_repository.save(test_client)
 
         # Act
-        output_message = controller.create_order(
+        output_message = controller.create_goomer_order(
             raw_input,
-            CreateOrderUseCase(
+            CreateGoomerOrderUseCase(
                 client_repository, item_repository, order_repository
             ),
         )
@@ -221,9 +221,9 @@ class TestTelegramBotController:
         client_repository.save(test_client)
 
         # Act
-        output_message = controller.create_order(
+        output_message = controller.create_goomer_order(
             raw_input,
-            CreateOrderUseCase(
+            CreateGoomerOrderUseCase(
                 client_repository, item_repository, order_repository
             ),
         )

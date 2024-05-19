@@ -7,14 +7,14 @@ from src.domain.entities.client import Client
 from src.domain.entities.item import Item
 from src.domain.exceptions import ItemsNotFoundByNameError
 from src.domain.ports.inbound.orders.dtos import (
-    CreateOrderInputDTO,
-    CreateOrderOutputDTO,
+    CreateGoomerOrderInputDTO,
+    CreateGoomerOrderOutputDTO,
     OrderItemInputDTO,
 )
-from src.domain.use_cases.create_order import CreateOrderUseCase
+from src.domain.use_cases.create_goomer_order import CreateGoomerOrderUseCase
 
 
-class TestCreateOrderUseCase:
+class TestCreateGoomerOrderUseCase:
     @pytest.fixture
     def client_repository(self):
         return Mock()
@@ -52,18 +52,17 @@ class TestCreateOrderUseCase:
         client_repository.find_client_by_name.return_value = client
         item_repository.find_items_by_names.return_value = [item_1, item_2]
 
-        input_dto = CreateOrderInputDTO(
+        input_dto = CreateGoomerOrderInputDTO(
             client_name="Tirulipa",
             external_order_id=1234,
             external_created_at="17:54",
-            created_at="2023-06-07T10:00:00",
             items=[
                 OrderItemInputDTO(item_name="Item 1", quantity=2),
                 OrderItemInputDTO(item_name="Item 2", quantity=3),
             ],
         )
 
-        use_case = CreateOrderUseCase(
+        use_case = CreateGoomerOrderUseCase(
             client_repository, item_repository, order_repository
         )
 
@@ -71,7 +70,7 @@ class TestCreateOrderUseCase:
         output_dto = use_case.execute(input_dto)
 
         # Assert
-        assert isinstance(output_dto, CreateOrderOutputDTO)
+        assert isinstance(output_dto, CreateGoomerOrderOutputDTO)
         assert output_dto.client_name == "Tirulipa"
         assert output_dto.external_order_id == 1234
         assert len(output_dto.order_items) == 2
@@ -105,15 +104,14 @@ class TestCreateOrderUseCase:
         client_repository.find_client_by_name.return_value = client
         item_repository.find_items_by_names.return_value = [item_1]
 
-        input_dto = CreateOrderInputDTO(
+        input_dto = CreateGoomerOrderInputDTO(
             client_name="Tirulipa",
             external_order_id=1234,
             external_created_at="17:54",
-            created_at="2023-06-07T10:00:00",
             items=[OrderItemInputDTO(item_name="Item 1", quantity=15)],
         )
 
-        use_case = CreateOrderUseCase(
+        use_case = CreateGoomerOrderUseCase(
             client_repository, item_repository, order_repository
         )
 
@@ -121,7 +119,7 @@ class TestCreateOrderUseCase:
         output_dto = use_case.execute(input_dto)
 
         # Assert
-        assert isinstance(output_dto, CreateOrderOutputDTO)
+        assert isinstance(output_dto, CreateGoomerOrderOutputDTO)
         assert output_dto.client_name == "Tirulipa"
         assert output_dto.external_order_id == 1234
         assert len(output_dto.order_items) == 1
@@ -143,17 +141,16 @@ class TestCreateOrderUseCase:
         client_repository.find_client_by_name.return_value = None
         item_repository.find_items_by_names.return_value = [item_1]
 
-        input_dto = CreateOrderInputDTO(
+        input_dto = CreateGoomerOrderInputDTO(
             client_name="Tirulipa Inexistente",
             external_created_at="17:54",
             external_order_id=1234,
-            created_at="2023-06-07T10:00:00",
             items=[
                 OrderItemInputDTO(item_name="Item 1", quantity=2),
             ],
         )
 
-        use_case = CreateOrderUseCase(
+        use_case = CreateGoomerOrderUseCase(
             client_repository, item_repository, order_repository
         )
 
@@ -161,7 +158,7 @@ class TestCreateOrderUseCase:
         output_dto = use_case.execute(input_dto)
 
         # Assert
-        assert isinstance(output_dto, CreateOrderOutputDTO)
+        assert isinstance(output_dto, CreateGoomerOrderOutputDTO)
         assert output_dto.client_name == "Tirulipa Inexistente"
         assert output_dto.external_order_id == 1234
         assert len(output_dto.order_items) == 1
@@ -188,15 +185,14 @@ class TestCreateOrderUseCase:
         client_repository.find_client_by_name.return_value = client
         item_repository.find_items_by_names.return_value = []
 
-        input_dto = CreateOrderInputDTO(
+        input_dto = CreateGoomerOrderInputDTO(
             client_name="Tirulipa",
             external_created_at="17:54",
             external_order_id=1234,
-            created_at="2023-06-07T10:00:00",
             items=[OrderItemInputDTO(item_name="Item 1", quantity=2)],
         )
 
-        use_case = CreateOrderUseCase(
+        use_case = CreateGoomerOrderUseCase(
             client_repository, item_repository, order_repository
         )
 

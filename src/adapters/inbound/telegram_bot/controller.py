@@ -12,12 +12,12 @@ from src.domain.ports.inbound.items.dtos import (
 )
 from src.domain.ports.inbound.orders.dtos import (
     CancelOrderInputDTO,
-    CreateOrderInputDTO,
+    CreateGoomerOrderInputDTO,
     OrderItemInputDTO,
 )
 from src.domain.use_cases.add_item import AddItemUseCase
 from src.domain.use_cases.cancel_order import CancelOrderUseCase
-from src.domain.use_cases.create_order import CreateOrderUseCase
+from src.domain.use_cases.create_goomer_order import CreateGoomerOrderUseCase
 from src.domain.use_cases.list_items import ListItemsUseCase
 from src.domain.use_cases.remove_item import RemoveItemUseCase
 from src.domain.use_cases.set_inventory_quantity import (
@@ -105,8 +105,8 @@ class TelegramBotController:
         return output_message
 
     @staticmethod
-    def create_order(
-        raw_input: str, create_order_use_case: CreateOrderUseCase
+    def create_goomer_order(
+        raw_input: str, create_order_use_case: CreateGoomerOrderUseCase
     ) -> str:
         raw_input_list = raw_input.split(ORDER_SECTIONS_DELIMITER)
 
@@ -121,7 +121,7 @@ class TelegramBotController:
         )
         created_at = TelegramBotController._extract_created_at(raw_input)
 
-        input_dto = CreateOrderInputDTO(
+        input_dto = CreateGoomerOrderInputDTO(
             client_name=client_name,
             external_order_id=external_order_id,
             external_created_at=created_at,

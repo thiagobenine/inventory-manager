@@ -4,9 +4,9 @@ from src.domain.entities.order import OrderItem
 from src.domain.exceptions import ItemsNotFoundByNameError
 from src.domain.factories.order import OrderFactory
 from src.domain.ports.inbound.orders.dtos import (
-    CreateOrderInputDTO,
-    CreateOrderItemOutputDTO,
-    CreateOrderOutputDTO,
+    CreateGoomerOrderInputDTO,
+    CreateGoomerOrderItemOutputDTO,
+    CreateGoomerOrderOutputDTO,
 )
 from src.domain.ports.outbound.repositories.client import (
     ClientRepositoryInterface,
@@ -17,7 +17,7 @@ from src.domain.ports.outbound.repositories.order import (
 )
 
 
-class CreateOrderUseCase:
+class CreateGoomerOrderUseCase:
     def __init__(
         self,
         client_repository: ClientRepositoryInterface,
@@ -40,7 +40,9 @@ class CreateOrderUseCase:
             missing_item_names = set(items_names_from_dto) - found_item_names
             raise ItemsNotFoundByNameError(list(missing_item_names))
 
-    def execute(self, input_dto: CreateOrderInputDTO) -> CreateOrderOutputDTO:
+    def execute(
+        self, input_dto: CreateGoomerOrderInputDTO
+    ) -> CreateGoomerOrderOutputDTO:
         client = self.client_repository.find_client_by_name(
             input_dto.client_name
         )
@@ -68,17 +70,19 @@ class CreateOrderUseCase:
             order_item = OrderItem(item=item, quantity=item_input.quantity)
             order_items.append(order_item)
 
-        order = OrderFactory.build(input_dto, client, order_items)
+        order = OrderFactory.build_from_goomer_order(
+            input_dto, client, order_items
+        )
 
         self.item_repository.save_all(items_from_repository)
         self.order_repository.save(order)
 
-        return CreateOrderOutputDTO(
+        return CreateGoomerOrderOutputDTO(
             order_id=order.id,
             client_name=client.name,
             external_order_id=order.external_id,
             order_items=[
-                CreateOrderItemOutputDTO(
+                CreateGoomerOrderItemOutputDTO(
                     item_name=order_item.item.name,
                     quantity=order_item.quantity,
                     inventory_quantity=order_item.item.inventory_quantity,

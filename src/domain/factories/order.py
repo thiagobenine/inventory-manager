@@ -3,13 +3,13 @@ from zoneinfo import ZoneInfo
 
 from src.domain.entities.client import Client
 from src.domain.entities.order import Order, OrderItem
-from src.domain.ports.inbound.orders.dtos import CreateOrderInputDTO
+from src.domain.ports.inbound.orders.dtos import CreateGoomerOrderInputDTO
 
 
 class OrderFactory:
     @staticmethod
     def build(
-        input_dto: CreateOrderInputDTO,
+        input_dto: CreateGoomerOrderInputDTO,
         client: Client,
         order_items: list[OrderItem],
     ) -> Order:
