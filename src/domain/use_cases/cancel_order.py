@@ -48,7 +48,7 @@ class CancelOrderUseCase:
 
         return CancelOrderOutputDTO(
             order_id=order.id,
-            client_name=order.client.name,
+            client_name=order.client.name if order.client else None,
             external_order_id=order.external_id,
             is_cancelled=order.is_cancelled,
             created_at=datetime.strftime(

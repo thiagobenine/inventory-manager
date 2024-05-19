@@ -14,6 +14,7 @@ from src.domain.entities.order import Order, OrderItem
 from src.domain.use_cases.add_item import AddItemUseCase
 from src.domain.use_cases.cancel_order import CancelOrderUseCase
 from src.domain.use_cases.create_goomer_order import CreateGoomerOrderUseCase
+from src.domain.use_cases.create_manual_order import CreateManualOrderUseCase
 from src.domain.use_cases.list_items import ListItemsUseCase
 from src.domain.use_cases.remove_item import RemoveItemUseCase
 from src.domain.use_cases.set_inventory_quantity import (
@@ -226,6 +227,61 @@ class TestTelegramBotController:
             CreateGoomerOrderUseCase(
                 client_repository, item_repository, order_repository
             ),
+        )
+
+        # Assert
+        assert output_message == "Ocorreu um erro inesperado\\."
+
+    def test_create_manual_order_controller_with_success(
+        self, controller, mongo_connection
+    ):
+        # Arrange
+        raw_input = (
+            "2 pure de batata doce,hamburguer de frango e mix de legumes"
+        )
+        order_repository = MongoOrderRepository(mongo_connection)
+
+        item_repository = MongoItemRepository(mongo_connection)
+        test_item = Item(
+            name="pure de batata doce,hamburguer de frango e mix de legumes",
+            inventory_quantity=100,
+        )
+        item_repository.save(test_item)
+
+        # Act
+        output_message = controller.create_manual_order(
+            raw_input,
+            CreateManualOrderUseCase(item_repository, order_repository),
+        )
+
+        # Assert
+        assert "Pedido registrado com sucesso\\!\n\n" in output_message
+        assert "*ID do Pedido:*" in output_message
+        assert "*Marmitas:*\n\n" in output_message
+        assert "*Marmitas de Frango:*\n" in output_message
+        assert (
+            "\\- *Nome:* Pure de batata doce,hamburguer de frango"
+            " e mix de legumes" in output_message
+        )
+        assert "\\- *Quantidade no Pedido:* 2" in output_message
+        assert "\\- *Novo Estoque:* 98\n\n" in output_message
+
+    def test_create_manual_order_controller_with_error(
+        self, controller, mongo_connection
+    ):
+        # Arrange
+        raw_input = (
+            "2 pure de batata doce,hamburguer de frango e mix de legumes"
+        )
+        order_repository = MongoOrderRepository(mongo_connection)
+
+        item_repository = MongoItemRepository(mongo_connection)
+        # doesn't save the item
+
+        # Act
+        output_message = controller.create_manual_order(
+            raw_input,
+            CreateManualOrderUseCase(item_repository, order_repository),
         )
 
         # Assert

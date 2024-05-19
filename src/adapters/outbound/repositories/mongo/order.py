@@ -25,10 +25,11 @@ class MongoOrderRepository:
     def find_order_by_id(self, order_id: ObjectId) -> None | Order:
         document = OrderDocument.objects.with_id(order_id)
         if document:
-            client = Client(
-                id=document.client.id,
-                name=document.client.name,
-            )
+            if document.client:
+                client = Client(
+                    id=document.client.id,
+                    name=document.client.name,
+                )
             order_items = [
                 OrderItem(
                     quantity=order_item.quantity,
@@ -43,7 +44,7 @@ class MongoOrderRepository:
             return Order(
                 id=document.id,
                 external_id=document.external_id,
-                client=client,
+                client=client if document.client else None,
                 external_created_at=document.external_created_at,
                 created_at=document.created_at,
                 updated_at=document.updated_at,
@@ -53,7 +54,8 @@ class MongoOrderRepository:
         return None
 
     def save(self, order: Order) -> None:
-        client_document = ClientDocument.objects.with_id(order.client.id)
+        if order.client:
+            client_document = ClientDocument.objects.with_id(order.client.id)
 
         order_item_documents = []
         for order_item in order.order_items:
@@ -68,7 +70,7 @@ class MongoOrderRepository:
         order_document = OrderDocument(
             id=order.id,
             external_id=order.external_id,
-            client=client_document,
+            client=client_document if order.client else None,
             external_created_at=order.external_created_at,
             created_at=order.created_at,
             updated_at=order.updated_at,

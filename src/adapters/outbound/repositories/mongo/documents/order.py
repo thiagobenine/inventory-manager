@@ -25,12 +25,12 @@ from src.adapters.outbound.repositories.mongo.documents.order_item import (
 class OrderDocument(Document):
     meta: ClassVar[dict] = {"collection": "orders"}
     id = ObjectIdField(primary_key=True, default=lambda: ObjectId())
-    external_id = IntField(required=True)
-    external_created_at = StringField(required=True)
+    external_id = IntField(required=False)
+    external_created_at = StringField(required=False)
     created_at = DateTimeField(default=datetime.now)
     updated_at = DateTimeField(default=datetime.now)
     is_cancelled = BooleanField(default=False)
-    client = ReferenceField(ClientDocument, required=True)
+    client = ReferenceField(ClientDocument, required=False)
     order_items = ListField(
         ReferenceField(OrderItemDocument, reverse_delete_rule=mongoengine.PULL)
     )

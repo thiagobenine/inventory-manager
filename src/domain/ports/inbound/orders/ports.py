@@ -5,6 +5,8 @@ from src.domain.ports.inbound.orders.dtos import (
     CancelOrderOutputDTO,
     CreateGoomerOrderInputDTO,
     CreateGoomerOrderOutputDTO,
+    CreateManualOrderInputDTO,
+    CreateManualOrderOutputDTO,
 )
 
 
@@ -12,6 +14,12 @@ class CreateGoomerOrderPort(Protocol):
     def execute(
         self, input_dto: CreateGoomerOrderInputDTO
     ) -> CreateGoomerOrderOutputDTO: ...
+
+
+class CreateManualOrderPort(Protocol):
+    def execute(
+        self, input_dto: CreateManualOrderInputDTO
+    ) -> CreateManualOrderOutputDTO: ...
 
 
 class CancelOrderPort(Protocol):
