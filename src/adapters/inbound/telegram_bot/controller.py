@@ -12,12 +12,14 @@ from src.domain.ports.inbound.items.dtos import (
 )
 from src.domain.ports.inbound.orders.dtos import (
     CancelOrderInputDTO,
-    CreateOrderInputDTO,
+    CreateGoomerOrderInputDTO,
+    CreateManualOrderInputDTO,
     OrderItemInputDTO,
 )
 from src.domain.use_cases.add_item import AddItemUseCase
 from src.domain.use_cases.cancel_order import CancelOrderUseCase
-from src.domain.use_cases.create_order import CreateOrderUseCase
+from src.domain.use_cases.create_goomer_order import CreateGoomerOrderUseCase
+from src.domain.use_cases.create_manual_order import CreateManualOrderUseCase
 from src.domain.use_cases.list_items import ListItemsUseCase
 from src.domain.use_cases.remove_item import RemoveItemUseCase
 from src.domain.use_cases.set_inventory_quantity import (
@@ -51,8 +53,8 @@ class TelegramBotController:
 
     @staticmethod
     def add_item(raw_input: str, add_item_use_case: AddItemUseCase) -> str:
-        raw_item_name, inventory_quantity = re.split(r",(?=[^,]*$)", raw_input)
-        item_name = TelegramBotController._clean_text(raw_item_name.strip())
+        raw_item_name, inventory_quantity = raw_input.rsplit(",", 1)
+        item_name = TelegramBotController._clean_text(raw_item_name)
 
         input_dto = AddItemInputDTO(
             name=item_name, inventory_quantity=int(inventory_quantity)
@@ -76,7 +78,7 @@ class TelegramBotController:
         raw_input: str, remove_item_use_case: RemoveItemUseCase
     ) -> str:
         raw_item_name = raw_input
-        item_name = TelegramBotController._clean_text(raw_item_name.strip())
+        item_name = TelegramBotController._clean_text(raw_item_name)
 
         input_dto = RemoveItemInputDTO(item_name=item_name)
         output_dto = remove_item_use_case.execute(input_dto)
@@ -91,7 +93,7 @@ class TelegramBotController:
         set_inventory_quantity_use_case: SetInventoryQuantityUseCase,
     ) -> str:
         raw_item_name, inventory_quantity = re.split(r",(?=[^,]*$)", raw_input)
-        item_name = TelegramBotController._clean_text(raw_item_name.strip())
+        item_name = TelegramBotController._clean_text(raw_item_name)
 
         input_dto = SetInventoryQuantityInputDTO(
             item_name=item_name, inventory_quantity=int(inventory_quantity)
@@ -105,15 +107,50 @@ class TelegramBotController:
         return output_message
 
     @staticmethod
-    def create_order(
-        raw_input: str, create_order_use_case: CreateOrderUseCase
+    def create_manual_order(
+        raw_input: str, create_order_use_case: CreateManualOrderUseCase
+    ) -> str:
+        order_items = TelegramBotController._extract_manual_order_items(
+            raw_input
+        )
+
+        input_dto = CreateManualOrderInputDTO(items=order_items)
+
+        output_dto = create_order_use_case.execute(input_dto)
+        output_message = (
+            TelegramBotPresenter.format_create_manual_order_message(output_dto)
+        )
+        return output_message
+
+    @staticmethod
+    def _extract_manual_order_items(raw_input: str) -> list[OrderItemInputDTO]:
+        raw_quantity_and_order_items = raw_input.split("\n")
+
+        order_items = []
+        for raw_quantity_and_order_item in raw_quantity_and_order_items:
+            quantity, order_item = raw_quantity_and_order_item.split(" ", 1)
+            order_items.append(
+                OrderItemInputDTO(
+                    item_name=TelegramBotController._clean_text(order_item),
+                    quantity=int(quantity.strip()),
+                )
+            )
+
+        if not order_items:
+            raise ValueError("Order Items not found")
+
+        return order_items
+
+    @staticmethod
+    def create_goomer_order(
+        raw_input: str, create_order_use_case: CreateGoomerOrderUseCase
     ) -> str:
         raw_input_list = raw_input.split(ORDER_SECTIONS_DELIMITER)
 
         external_order_id = TelegramBotController._extract_external_order_id(
             raw_input_list[1]
         )
-        order_items = TelegramBotController._extract_order_items(
+        order_items = TelegramBotController._extract_goomer_order_items(
             raw_input_list[2]
         )
         client_name = TelegramBotController._extract_client_name(
@@ -121,7 +158,7 @@ class TelegramBotController:
         )
         created_at = TelegramBotController._extract_created_at(raw_input)
 
-        input_dto = CreateOrderInputDTO(
+        input_dto = CreateGoomerOrderInputDTO(
             client_name=client_name,
             external_order_id=external_order_id,
             external_created_at=created_at,
@@ -129,8 +166,8 @@ class TelegramBotController:
         )
 
         output_dto = create_order_use_case.execute(input_dto)
-        output_message = TelegramBotPresenter.format_create_order_message(
-            output_dto
+        output_message = (
+            TelegramBotPresenter.format_create_goomer_order_message(output_dto)
         )
         return output_message
 
@@ -144,7 +181,7 @@ class TelegramBotController:
         return int(external_order_id_match.group(1))
 
     @staticmethod
-    def _extract_order_items(raw_order_items_section: str) -> list:
+    def _extract_goomer_order_items(raw_order_items_section: str) -> list:
         raw_order_items = raw_order_items_section.split("\n")
         filtered_raw_order_items = [
             item
@@ -226,7 +263,9 @@ class TelegramBotController:
         return TelegramBotController._adjust_commas(
             TelegramBotController._remove_accents(
                 TelegramBotController._remove_asterisks(
-                    TelegramBotController._remove_multiple_spaces(input_str)
+                    TelegramBotController._remove_multiple_spaces(
+                        input_str.strip()
+                    )
                 )
             )
         ).lower()

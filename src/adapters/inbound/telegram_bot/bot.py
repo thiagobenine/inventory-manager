@@ -26,7 +26,8 @@ from src.domain.ports.outbound.repositories.order import (
 )
 from src.domain.use_cases.add_item import AddItemUseCase
 from src.domain.use_cases.cancel_order import CancelOrderUseCase
-from src.domain.use_cases.create_order import CreateOrderUseCase
+from src.domain.use_cases.create_goomer_order import CreateGoomerOrderUseCase
+from src.domain.use_cases.create_manual_order import CreateManualOrderUseCase
 from src.domain.use_cases.list_items import ListItemsUseCase
 from src.domain.use_cases.remove_item import RemoveItemUseCase
 from src.domain.use_cases.set_inventory_quantity import (
@@ -39,8 +40,9 @@ class ConversationState(int, Enum):
     WAITING_ADD_ITEM = 1
     WAITING_REMOVE_ITEM = 2
     WAITING_SET_INVENTORY_QUANTITY = 3
-    WAITING_CREATE_ORDER = 4
+    WAITING_CREATE_GOOMER_ORDER = 4
     WAITING_CANCEL_ORDER = 5
+    WAITING_CREATE_MANUAL_ORDER = 6
 
 
 class TelegramBotCommandHandler:
@@ -81,7 +83,14 @@ class TelegramBotCommandHandler:
             ],
             [
                 InlineKeyboardButton(
-                    "Registrar Pedido", callback_data="create_order"
+                    "Registrar Pedido (Goomer)",
+                    callback_data="create_goomer_order",
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    "Registrar Pedido (Manual)",
+                    callback_data="create_manual_order",
                 )
             ],
             [
@@ -96,7 +105,7 @@ class TelegramBotCommandHandler:
         )
         return ConversationState.WAITING_OPTION
 
-    async def handle_option(
+    async def handle_option(  # noqa: C901
         self, update: Update, context: ContextTypes.DEFAULT_TYPE
     ) -> int:
         query = update.callback_query
@@ -131,12 +140,20 @@ class TelegramBotCommandHandler:
                 reply_markup=ForceReply(selective=True),
             )
             return ConversationState.WAITING_SET_INVENTORY_QUANTITY
-        elif query.data == "create_order":
+        elif query.data == "create_goomer_order":
             await query.message.reply_text(
-                "Você escolheu registrar um pedido. Envie os dados do pedido.",
+                "Você escolheu registrar um pedido feito pelo Goomer. "
+                "Envie os dados do pedido.",
                 reply_markup=ForceReply(selective=True),
             )
-            return ConversationState.WAITING_CREATE_ORDER
+            return ConversationState.WAITING_CREATE_GOOMER_ORDER
+        elif query.data == "create_manual_order":
+            await query.message.reply_text(
+                "Você escolheu registrar um pedido feito manualmente. "
+                "Envie os dados do pedido.",
+                reply_markup=ForceReply(selective=True),
+            )
+            return ConversationState.WAITING_CREATE_MANUAL_ORDER
         elif query.data == "cancel_order":
             await query.message.reply_text(
                 "Você escolheu cancelar um pedido. Envie o ID do pedido. "
@@ -217,17 +234,36 @@ class TelegramBotCommandHandler:
         )
         return ConversationHandler.END
 
-    async def handle_create_order(
+    async def handle_create_goomer_order(
         self, update: Update, context: ContextTypes.DEFAULT_TYPE
     ) -> int:
         raw_input = update.message.text
         print(f"Raw input: {raw_input}")
 
-        create_order_use_case = CreateOrderUseCase(
+        create_goomer_order_use_case = CreateGoomerOrderUseCase(
             self.client_repository, self.item_repository, self.order_repository
         )
-        output_message = self.telegram_bot_controller.create_order(
-            raw_input, create_order_use_case
+        output_message = self.telegram_bot_controller.create_goomer_order(
+            raw_input, create_goomer_order_use_case
+        )
+
+        await update.message.reply_text(
+            output_message,
+            parse_mode="MarkdownV2",
+        )
+        return ConversationHandler.END
+
+    async def handle_create_manual_order(
+        self, update: Update, context: ContextTypes.DEFAULT_TYPE
+    ) -> int:
+        raw_input = update.message.text
+        print(f"Raw input: {raw_input}")
+
+        create_manual_order_use_case = CreateManualOrderUseCase(
+            self.item_repository, self.order_repository
+        )
+        output_message = self.telegram_bot_controller.create_manual_order(
+            raw_input, create_manual_order_use_case
         )
 
         await update.message.reply_text(
@@ -279,10 +315,16 @@ class TelegramBotCommandHandler:
                         self.handle_set_inventory_quantity,
                     )
                 ],
-                ConversationState.WAITING_CREATE_ORDER: [
+                ConversationState.WAITING_CREATE_GOOMER_ORDER: [
                     MessageHandler(
                         filters.TEXT & ~filters.COMMAND,
-                        self.handle_create_order,
+                        self.handle_create_goomer_order,
+                    )
+                ],
+                ConversationState.WAITING_CREATE_MANUAL_ORDER: [
+                    MessageHandler(
+                        filters.TEXT & ~filters.COMMAND,
+                        self.handle_create_manual_order,
                     )
                 ],
                 ConversationState.WAITING_CANCEL_ORDER: [

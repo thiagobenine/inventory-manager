@@ -7,7 +7,7 @@ class OrderItemInputDTO(BaseModel):
     quantity: int
 
 
-class CreateOrderInputDTO(BaseModel):
+class CreateGoomerOrderInputDTO(BaseModel):
     client_name: str
     external_order_id: int
     external_created_at: str
@@ -20,10 +20,19 @@ class CreateOrderItemOutputDTO(BaseModel):
     inventory_quantity: int
 
 
-class CreateOrderOutputDTO(BaseModel):
+class CreateGoomerOrderOutputDTO(BaseModel):
     order_id: ObjectIdField
     client_name: str
     external_order_id: int
+    order_items: list[CreateOrderItemOutputDTO]
+
+
+class CreateManualOrderInputDTO(BaseModel):
+    items: list[OrderItemInputDTO]
+
+
+class CreateManualOrderOutputDTO(BaseModel):
+    order_id: ObjectIdField
     order_items: list[CreateOrderItemOutputDTO]
 
 
@@ -39,8 +48,8 @@ class CancelOrderItemOutputDTO(BaseModel):
 
 class CancelOrderOutputDTO(BaseModel):
     order_id: ObjectIdField
-    client_name: str
-    external_order_id: int
+    client_name: str | None
+    external_order_id: int | None
     order_items: list[CancelOrderItemOutputDTO]
     is_cancelled: bool
     created_at: str

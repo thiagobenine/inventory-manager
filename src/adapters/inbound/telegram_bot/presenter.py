@@ -8,8 +8,9 @@ from src.domain.ports.inbound.items.dtos import (
 from src.domain.ports.inbound.orders.dtos import (
     CancelOrderItemOutputDTO,
     CancelOrderOutputDTO,
+    CreateGoomerOrderOutputDTO,
+    CreateManualOrderOutputDTO,
     CreateOrderItemOutputDTO,
-    CreateOrderOutputDTO,
 )
 
 CATEGORY_ITEM_NAME_MAP: dict[str, str] = {
@@ -29,17 +30,9 @@ class TelegramBotPresenter:
 
     @staticmethod
     def format_list_items_message(output_dto: ListItemsOutputDTO) -> str:
-        meat_items = []
-        chicken_items = []
-        vegan_items = []
-
-        for item in output_dto.items:
-            if '"carne"' in item.item_name or '"frango"' in item.item_name:
-                vegan_items.append(item)
-            elif "carne" in item.item_name:
-                meat_items.append(item)
-            elif "frango" in item.item_name:
-                chicken_items.append(item)
+        meat_items, chicken_items, vegan_items = (
+            TelegramBotPresenter._classify_items_by_category(output_dto.items)
+        )
 
         output_message = "Lista de Marmitas:\n"
         output_message += TelegramBotPresenter._format_category_for_list_items(
@@ -86,20 +79,45 @@ class TelegramBotPresenter:
         return output_message
 
     @staticmethod
-    def format_create_order_message(
-        output_dto: CreateOrderOutputDTO,
+    def format_create_manual_order_message(
+        output_dto: CreateManualOrderOutputDTO,
     ) -> str:
-        vegan_items = []
-        meat_items = []
-        chicken_items = []
+        meat_items, chicken_items, vegan_items = (
+            TelegramBotPresenter._classify_items_by_category(
+                output_dto.order_items
+            )
+        )
 
-        for item in output_dto.order_items:
-            if '"carne"' in item.item_name or '"frango"' in item.item_name:
-                vegan_items.append(item)
-            elif "carne" in item.item_name:
-                meat_items.append(item)
-            elif "frango" in item.item_name:
-                chicken_items.append(item)
+        output_message = "Pedido registrado com sucesso\\!\n\n"
+        output_message += f"*ID do Pedido:* {output_dto.order_id}\n"
+        output_message += "*Marmitas:*\n\n"
+
+        output_message += (
+            TelegramBotPresenter._format_category_for_order_items(
+                meat_items, "Carne"
+            )
+        )
+        output_message += (
+            TelegramBotPresenter._format_category_for_order_items(
+                chicken_items, "Frango"
+            )
+        )
+        output_message += (
+            TelegramBotPresenter._format_category_for_order_items(
+                vegan_items, "Vegana"
+            )
+        )
+        return output_message
+
+    @staticmethod
+    def format_create_goomer_order_message(
+        output_dto: CreateGoomerOrderOutputDTO,
+    ) -> str:
+        meat_items, chicken_items, vegan_items = (
+            TelegramBotPresenter._classify_items_by_category(
+                output_dto.order_items
+            )
+        )
 
         output_message = "Pedido registrado com sucesso\\!\n\n"
         output_message += f"*ID do Pedido:* {output_dto.order_id}\n"
@@ -141,7 +159,12 @@ class TelegramBotPresenter:
 
         output_message = "Pedido cancelado com sucesso\\!\n\n"
         output_message += f"*ID do Pedido:* {output_dto.order_id}\n"
-        output_message += f"*Cliente:* {output_dto.client_name.capitalize()}\n"
+
+        if output_dto.client_name:
+            output_message += (
+                f"*Cliente:* {output_dto.client_name.capitalize()}\n"
+            )
+
         output_message += "*Marmitas:*\n\n"
 
         output_message += (
@@ -183,3 +206,19 @@ class TelegramBotPresenter:
             output_message += f"  \\- *Novo Estoque:* {inventory_quantity}\n\n"
 
         return output_message
+
+    @staticmethod
+    def _classify_items_by_category(items):
+        meat_items = []
+        chicken_items = []
+        vegan_items = []
+
+        for item in items:
+            if '"carne"' in item.item_name or '"frango"' in item.item_name:
+                vegan_items.append(item)
+            elif "carne" in item.item_name:
+                meat_items.append(item)
+            elif "frango" in item.item_name:
+                chicken_items.append(item)
+
+        return meat_items, chicken_items, vegan_items

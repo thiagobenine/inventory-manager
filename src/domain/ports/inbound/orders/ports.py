@@ -3,15 +3,23 @@ from typing import Protocol
 from src.domain.ports.inbound.orders.dtos import (
     CancelOrderInputDTO,
     CancelOrderOutputDTO,
-    CreateOrderInputDTO,
-    CreateOrderOutputDTO,
+    CreateGoomerOrderInputDTO,
+    CreateGoomerOrderOutputDTO,
+    CreateManualOrderInputDTO,
+    CreateManualOrderOutputDTO,
 )
 
 
-class CreateOrderPort(Protocol):
+class CreateGoomerOrderPort(Protocol):
     def execute(
-        self, input_dto: CreateOrderInputDTO
-    ) -> CreateOrderOutputDTO: ...
+        self, input_dto: CreateGoomerOrderInputDTO
+    ) -> CreateGoomerOrderOutputDTO: ...
+
+
+class CreateManualOrderPort(Protocol):
+    def execute(
+        self, input_dto: CreateManualOrderInputDTO
+    ) -> CreateManualOrderOutputDTO: ...
 
 
 class CancelOrderPort(Protocol):

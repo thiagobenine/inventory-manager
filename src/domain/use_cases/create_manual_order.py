@@ -1,15 +1,11 @@
-from src.domain.entities.client import Client
 from src.domain.entities.item import Item
 from src.domain.entities.order import OrderItem
 from src.domain.exceptions import ItemsNotFoundByNameError
 from src.domain.factories.order import OrderFactory
 from src.domain.ports.inbound.orders.dtos import (
-    CreateOrderInputDTO,
+    CreateManualOrderInputDTO,
+    CreateManualOrderOutputDTO,
     CreateOrderItemOutputDTO,
-    CreateOrderOutputDTO,
-)
-from src.domain.ports.outbound.repositories.client import (
-    ClientRepositoryInterface,
 )
 from src.domain.ports.outbound.repositories.item import ItemRepositoryInterface
 from src.domain.ports.outbound.repositories.order import (
@@ -17,14 +13,12 @@ from src.domain.ports.outbound.repositories.order import (
 )
 
 
-class CreateOrderUseCase:
+class CreateManualOrderUseCase:
     def __init__(
         self,
-        client_repository: ClientRepositoryInterface,
         item_repository: ItemRepositoryInterface,
         order_repository: OrderRepositoryInterface,
     ):
-        self.client_repository = client_repository
         self.item_repository = item_repository
         self.order_repository = order_repository
 
@@ -40,14 +34,9 @@ class CreateOrderUseCase:
             missing_item_names = set(items_names_from_dto) - found_item_names
             raise ItemsNotFoundByNameError(list(missing_item_names))
 
-    def execute(self, input_dto: CreateOrderInputDTO) -> CreateOrderOutputDTO:
-        client = self.client_repository.find_client_by_name(
-            input_dto.client_name
-        )
-        if not client:
-            client = Client(name=input_dto.client_name)
-            self.client_repository.save(client)
-
+    def execute(
+        self, input_dto: CreateManualOrderInputDTO
+    ) -> CreateManualOrderOutputDTO:
         items_names_from_dto = [
             item_input.item_name for item_input in input_dto.items
         ]
@@ -68,15 +57,13 @@ class CreateOrderUseCase:
             order_item = OrderItem(item=item, quantity=item_input.quantity)
             order_items.append(order_item)
 
-        order = OrderFactory.build(input_dto, client, order_items)
+        order = OrderFactory.build_from_manual_order(order_items)
 
         self.item_repository.save_all(items_from_repository)
         self.order_repository.save(order)
 
-        return CreateOrderOutputDTO(
+        return CreateManualOrderOutputDTO(
             order_id=order.id,
-            client_name=client.name,
-            external_order_id=order.external_id,
             order_items=[
                 CreateOrderItemOutputDTO(
                     item_name=order_item.item.name,
