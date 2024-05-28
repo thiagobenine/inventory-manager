@@ -17,6 +17,8 @@ pydantic-mongo = "^2.2.0"
 mongomock = "^4.1.2"
 setuptools = "^69.5.1"
 python-telegram-bot = {extras = ["webhooks"], version = "^21.1.1"}
+newrelic = "^9.9.1"
+myloglib = {path = "myloglib-0.1.0-py3-none-any.whl"}
 
 
 [tool.poetry.group.dev.dependencies]

@@ -1,5 +1,5 @@
 from enum import Enum
-
+import logging
 from telegram import (
     ForceReply,
     InlineKeyboardButton,
@@ -34,7 +34,7 @@ from src.domain.use_cases.set_inventory_quantity import (
     SetInventoryQuantityUseCase,
 )
 
-
+logger = logging.getLogger(__name__)
 class ConversationState(int, Enum):
     WAITING_OPTION = 0
     WAITING_ADD_ITEM = 1
@@ -120,6 +120,7 @@ class TelegramBotCommandHandler:
             )
             return ConversationState.WAITING_ADD_ITEM
         elif query.data == "list_items":
+            logger.info("List items")
             await self.handle_list_items(query.message)
             return ConversationHandler.END
         elif query.data == "remove_item":

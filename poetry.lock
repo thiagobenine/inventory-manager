@@ -195,6 +195,124 @@ packaging = "*"
 sentinels = "*"
 
 [[package]]
+name = "myloglib"
+version = "0.1.0"
+description = ""
+optional = false
+python-versions = ">=3.12,<4.0"
+files = [
+    {file = "myloglib-0.1.0-py3-none-any.whl", hash = "sha256:45b0db6a7f7f5c152b346abc2fb224f4a77483413bdde7a37ad6c3cfe4cca75f"},
+]
+
+[package.dependencies]
+mypy = ">=1.10.0,<2.0.0"
+newrelic = ">=9.9.0,<10.0.0"
+pytest = ">=8.2.0,<9.0.0"
+pytest-mock = ">=3.14.0,<4.0.0"
+
+[package.source]
+type = "file"
+url = "myloglib-0.1.0-py3-none-any.whl"
+
+[[package]]
+name = "mypy"
+version = "1.10.0"
+description = "Optional static typing for Python"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "mypy-1.10.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:da1cbf08fb3b851ab3b9523a884c232774008267b1f83371ace57f412fe308c2"},
+    {file = "mypy-1.10.0-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:12b6bfc1b1a66095ab413160a6e520e1dc076a28f3e22f7fb25ba3b000b4ef99"},
+    {file = "mypy-1.10.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:9e36fb078cce9904c7989b9693e41cb9711e0600139ce3970c6ef814b6ebc2b2"},
+    {file = "mypy-1.10.0-cp310-cp310-musllinux_1_1_x86_64.whl", hash = "sha256:2b0695d605ddcd3eb2f736cd8b4e388288c21e7de85001e9f85df9187f2b50f9"},
+    {file = "mypy-1.10.0-cp310-cp310-win_amd64.whl", hash = "sha256:cd777b780312ddb135bceb9bc8722a73ec95e042f911cc279e2ec3c667076051"},
+    {file = "mypy-1.10.0-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:3be66771aa5c97602f382230165b856c231d1277c511c9a8dd058be4784472e1"},
+    {file = "mypy-1.10.0-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:8b2cbaca148d0754a54d44121b5825ae71868c7592a53b7292eeb0f3fdae95ee"},
+    {file = "mypy-1.10.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:1ec404a7cbe9fc0e92cb0e67f55ce0c025014e26d33e54d9e506a0f2d07fe5de"},
+    {file = "mypy-1.10.0-cp311-cp311-musllinux_1_1_x86_64.whl", hash = "sha256:e22e1527dc3d4aa94311d246b59e47f6455b8729f4968765ac1eacf9a4760bc7"},
+    {file = "mypy-1.10.0-cp311-cp311-win_amd64.whl", hash = "sha256:a87dbfa85971e8d59c9cc1fcf534efe664d8949e4c0b6b44e8ca548e746a8d53"},
+    {file = "mypy-1.10.0-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:a781f6ad4bab20eef8b65174a57e5203f4be627b46291f4589879bf4e257b97b"},
+    {file = "mypy-1.10.0-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:b808e12113505b97d9023b0b5e0c0705a90571c6feefc6f215c1df9381256e30"},
+    {file = "mypy-1.10.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:8f55583b12156c399dce2df7d16f8a5095291354f1e839c252ec6c0611e86e2e"},
+    {file = "mypy-1.10.0-cp312-cp312-musllinux_1_1_x86_64.whl", hash = "sha256:4cf18f9d0efa1b16478c4c129eabec36148032575391095f73cae2e722fcf9d5"},
+    {file = "mypy-1.10.0-cp312-cp312-win_amd64.whl", hash = "sha256:bc6ac273b23c6b82da3bb25f4136c4fd42665f17f2cd850771cb600bdd2ebeda"},
+    {file = "mypy-1.10.0-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:9fd50226364cd2737351c79807775136b0abe084433b55b2e29181a4c3c878c0"},
+    {file = "mypy-1.10.0-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:f90cff89eea89273727d8783fef5d4a934be2fdca11b47def50cf5d311aff727"},
+    {file = "mypy-1.10.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:fcfc70599efde5c67862a07a1aaf50e55bce629ace26bb19dc17cece5dd31ca4"},
+    {file = "mypy-1.10.0-cp38-cp38-musllinux_1_1_x86_64.whl", hash = "sha256:075cbf81f3e134eadaf247de187bd604748171d6b79736fa9b6c9685b4083061"},
+    {file = "mypy-1.10.0-cp38-cp38-win_amd64.whl", hash = "sha256:3f298531bca95ff615b6e9f2fc0333aae27fa48052903a0ac90215021cdcfa4f"},
+    {file = "mypy-1.10.0-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:fa7ef5244615a2523b56c034becde4e9e3f9b034854c93639adb667ec9ec2976"},
+    {file = "mypy-1.10.0-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:3236a4c8f535a0631f85f5fcdffba71c7feeef76a6002fcba7c1a8e57c8be1ec"},
+    {file = "mypy-1.10.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:4a2b5cdbb5dd35aa08ea9114436e0d79aceb2f38e32c21684dcf8e24e1e92821"},
+    {file = "mypy-1.10.0-cp39-cp39-musllinux_1_1_x86_64.whl", hash = "sha256:92f93b21c0fe73dc00abf91022234c79d793318b8a96faac147cd579c1671746"},
+    {file = "mypy-1.10.0-cp39-cp39-win_amd64.whl", hash = "sha256:28d0e038361b45f099cc086d9dd99c15ff14d0188f44ac883010e172ce86c38a"},
+    {file = "mypy-1.10.0-py3-none-any.whl", hash = "sha256:f8c083976eb530019175aabadb60921e73b4f45736760826aa1689dda8208aee"},
+    {file = "mypy-1.10.0.tar.gz", hash = "sha256:3d087fcbec056c4ee34974da493a826ce316947485cef3901f511848e687c131"},
+]
+
+[package.dependencies]
+mypy-extensions = ">=1.0.0"
+typing-extensions = ">=4.1.0"
+
+[package.extras]
+dmypy = ["psutil (>=4.0)"]
+install-types = ["pip"]
+mypyc = ["setuptools (>=50)"]
+reports = ["lxml"]
+
+[[package]]
+name = "mypy-extensions"
+version = "1.0.0"
+description = "Type system extensions for programs checked with the mypy type checker."
+optional = false
+python-versions = ">=3.5"
+files = [
+    {file = "mypy_extensions-1.0.0-py3-none-any.whl", hash = "sha256:4392f6c0eb8a5668a69e23d168ffa70f0be9ccfd32b5cc2d26a34ae5b844552d"},
+    {file = "mypy_extensions-1.0.0.tar.gz", hash = "sha256:75dbf8955dc00442a438fc4d0666508a9a97b6bd41aa2f0ffe9d2f2725af0782"},
+]
+
+[[package]]
+name = "newrelic"
+version = "9.9.1"
+description = "New Relic Python Agent"
+optional = false
+python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*,>=2.7"
+files = [
+    {file = "newrelic-9.9.1-cp27-cp27m-manylinux1_x86_64.whl", hash = "sha256:474499f482da7f58b5039f2c42dea2880d878b30729ae563bb1498a0bb30be44"},
+    {file = "newrelic-9.9.1-cp27-cp27m-manylinux2010_x86_64.whl", hash = "sha256:3c99cc368a3cfd9ce40ca4bbe2fe3bdd5f7d37865ea5e4bf811ba6fd0d00152d"},
+    {file = "newrelic-9.9.1-cp27-cp27mu-manylinux1_x86_64.whl", hash = "sha256:3ef567a779b068297c040f7410153135fb12e51e4a82084675b0cf142c407551"},
+    {file = "newrelic-9.9.1-cp27-cp27mu-manylinux2010_x86_64.whl", hash = "sha256:303117d3402659afac45174dfe7c595b7d4b3c0812a76b712c251c91ef95c430"},
+    {file = "newrelic-9.9.1-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:5c813e9c7bdb1381cb0eda4925e07aa8ee21e111b5025d02261605eaabb129f1"},
+    {file = "newrelic-9.9.1-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:e5d688917307d083d7fa6f3b31eec40c5a3782b160383230f5f644e2d4ae2a26"},
+    {file = "newrelic-9.9.1-cp310-cp310-musllinux_1_1_aarch64.whl", hash = "sha256:5710910ceb847f8806540e6934764fff6823d7dcc6d30955e9ecb012e20efbfd"},
+    {file = "newrelic-9.9.1-cp310-cp310-musllinux_1_1_x86_64.whl", hash = "sha256:aefa66f59d62ec22a6d347afa73c24bd723521c4cc0fdce7f51c71bfe85c42bc"},
+    {file = "newrelic-9.9.1-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:afdb30c4f89d0f089ac05ca50a383f94cfcdb07aab0b9722d2d5af09626ab304"},
+    {file = "newrelic-9.9.1-cp311-cp311-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:7c6361af2a60ab60a5757b13ce0b9b4efeee577a228637b9b8b449d47ec81fdd"},
+    {file = "newrelic-9.9.1-cp311-cp311-musllinux_1_1_aarch64.whl", hash = "sha256:7aa1be0d0530d0c566dee2c4d43765aba9fc5fae256fac110ba57aae6ae8d8c4"},
+    {file = "newrelic-9.9.1-cp311-cp311-musllinux_1_1_x86_64.whl", hash = "sha256:8ad34b8eb60f33b0eab9ed7727cdb9452ad7d4381a2c5397e6ed3d4895833fd1"},
+    {file = "newrelic-9.9.1-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:1e613f1ffd0d35b1f866382eeee52d8aa9576d82f3de818a84aa2e56c08f1868"},
+    {file = "newrelic-9.9.1-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:c3264e305ae0e973f3a02f7394460f4c7366822e8a3509cd08b2093f9cb5def5"},
+    {file = "newrelic-9.9.1-cp312-cp312-musllinux_1_1_aarch64.whl", hash = "sha256:2b165328c05fd2c006cf1f476bebb281579944418a13903e802344660b13332c"},
+    {file = "newrelic-9.9.1-cp312-cp312-musllinux_1_1_x86_64.whl", hash = "sha256:e3226ac2c0c57955a00a11f6cf982dd6747490254ed322d6fcf36077bfc37386"},
+    {file = "newrelic-9.9.1-cp37-cp37m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:673ed069516fa4d168cd12b7319bcadf75fbc9f0ebcd147916e281b2bc16c551"},
+    {file = "newrelic-9.9.1-cp37-cp37m-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:40820a3dff89cc8e242f0543fabd1692333458f627ebad6f2e56f6c9db7d2efe"},
+    {file = "newrelic-9.9.1-cp37-cp37m-musllinux_1_1_aarch64.whl", hash = "sha256:ddb2d4a2fc3f88c5d1c0b4dec2f8eb89907541501f2ec7ac14e5506ea702e0f5"},
+    {file = "newrelic-9.9.1-cp37-cp37m-musllinux_1_1_x86_64.whl", hash = "sha256:d50fa347584967c15e574a2503fdcafcd13c86c17e589021eae5432d4aad1cca"},
+    {file = "newrelic-9.9.1-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:fbca7a8749eadb05eacdfb68af938dc1045c6be8bcc83375d15a840172b5f40e"},
+    {file = "newrelic-9.9.1-cp38-cp38-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:0d6feba8968662c7a84ee6fe837d3be8c53a7126398ded3283634bb51dc43e94"},
+    {file = "newrelic-9.9.1-cp38-cp38-musllinux_1_1_aarch64.whl", hash = "sha256:eec85620708aea387b602db61fb43504efc5b5fcb7b627d2cbe0a33c3fe10ab9"},
+    {file = "newrelic-9.9.1-cp38-cp38-musllinux_1_1_x86_64.whl", hash = "sha256:21e280c027835062f54be2df48f32834dcc98f382b049c14ee35b80aa7b48ea0"},
+    {file = "newrelic-9.9.1-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:8fb0e56324df855c3079d7d86fd6b35e79727759de8c8517be9c06d482092c3b"},
+    {file = "newrelic-9.9.1-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:c43a14c48dd8f752da348c3ec80cb500b9ead12abcd40d29d39a0bb8a62a3a0d"},
+    {file = "newrelic-9.9.1-cp39-cp39-musllinux_1_1_aarch64.whl", hash = "sha256:763faab4868b0226906c17ef0419dab527964f489cb2e3818d57d0484762cb2e"},
+    {file = "newrelic-9.9.1-cp39-cp39-musllinux_1_1_x86_64.whl", hash = "sha256:7f41343548aad28b7722c85d00079b4e61ef48d5a6bdf757c458a5fe860bb099"},
+    {file = "newrelic-9.9.1.tar.gz", hash = "sha256:e49c734058c7b6a6c199e8c2657187143061a6eda92cc8ba67739de88a9e203d"},
+]
+
+[package.extras]
+infinite-tracing = ["grpcio", "protobuf"]
+
+[[package]]
 name = "packaging"
 version = "23.2"
 description = "Core utilities for Python packages"
@@ -207,13 +325,13 @@ files = [
 
 [[package]]
 name = "pluggy"
-version = "1.4.0"
+version = "1.5.0"
 description = "plugin and hook calling mechanisms for python"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pluggy-1.4.0-py3-none-any.whl", hash = "sha256:7db9f7b503d67d1c5b95f59773ebb58a8c1c288129a88665838012cfb07b8981"},
-    {file = "pluggy-1.4.0.tar.gz", hash = "sha256:8c85c2876142a764e5b7548e7d9a0e0ddb46f5185161049a79b7e974454223be"},
+    {file = "pluggy-1.5.0-py3-none-any.whl", hash = "sha256:44e1ad92c8ca002de6377e165f3e0f1be63266ab4d554740532335b9d75ea669"},
+    {file = "pluggy-1.5.0.tar.gz", hash = "sha256:2cffa88e94fdc978c4c574f15f9e59b7f4201d439195c3715ca9e2486f1d0cf1"},
 ]
 
 [package.extras]
@@ -450,23 +568,40 @@ zstd = ["zstandard"]
 
 [[package]]
 name = "pytest"
-version = "8.0.2"
+version = "8.2.1"
 description = "pytest: simple powerful testing with Python"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pytest-8.0.2-py3-none-any.whl", hash = "sha256:edfaaef32ce5172d5466b5127b42e0d6d35ebbe4453f0e3505d96afd93f6b096"},
-    {file = "pytest-8.0.2.tar.gz", hash = "sha256:d4051d623a2e0b7e51960ba963193b09ce6daeb9759a451844a21e4ddedfc1bd"},
+    {file = "pytest-8.2.1-py3-none-any.whl", hash = "sha256:faccc5d332b8c3719f40283d0d44aa5cf101cec36f88cde9ed8f2bc0538612b1"},
+    {file = "pytest-8.2.1.tar.gz", hash = "sha256:5046e5b46d8e4cac199c373041f26be56fdb81eb4e67dc11d4e10811fc3408fd"},
 ]
 
 [package.dependencies]
 colorama = {version = "*", markers = "sys_platform == \"win32\""}
 iniconfig = "*"
 packaging = "*"
-pluggy = ">=1.3.0,<2.0"
+pluggy = ">=1.5,<2.0"
 
 [package.extras]
-testing = ["argcomplete", "attrs (>=19.2.0)", "hypothesis (>=3.56)", "mock", "nose", "pygments (>=2.7.2)", "requests", "setuptools", "xmlschema"]
+dev = ["argcomplete", "attrs (>=19.2)", "hypothesis (>=3.56)", "mock", "pygments (>=2.7.2)", "requests", "setuptools", "xmlschema"]
+
+[[package]]
+name = "pytest-mock"
+version = "3.14.0"
+description = "Thin-wrapper around the mock package for easier use with pytest"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "pytest-mock-3.14.0.tar.gz", hash = "sha256:2719255a1efeceadbc056d6bf3df3d1c5015530fb40cf347c0f9afac88410bd0"},
+    {file = "pytest_mock-3.14.0-py3-none-any.whl", hash = "sha256:0b72c38033392a5f4621342fe11e9219ac11ec9d375f8e2a0c164539e0d70f6f"},
+]
+
+[package.dependencies]
+pytest = ">=6.2.5"
+
+[package.extras]
+dev = ["pre-commit", "pytest-asyncio", "tox"]
 
 [[package]]
 name = "python-dateutil"
@@ -616,4 +751,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "3.12.0"
-content-hash = "1e5caacb3cf364f9632793241afbbd1ef0a6a8bf6dc4b633bcf71391e4a4b6b3"
+content-hash = "16d3cf9f010a5eed1e7145459be264d76dde480f8f5f2245f34daf7081fe70f1"

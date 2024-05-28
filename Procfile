@@ -1,1 +1,1 @@
-web: python src/main.py $PORT
+web: NEW_RELIC_CONFIG_FILE=newrelic.ini newrelic-admin run-program python src/main.py $PORT
