@@ -9,6 +9,7 @@ from src.domain.ports.inbound.items.dtos import (
     AddItemInputDTO,
     RemoveItemInputDTO,
     SetInventoryQuantityInputDTO,
+    SetInventoryQuantityItemInputDTO,
 )
 from src.domain.ports.inbound.orders.dtos import (
     CancelOrderInputDTO,
@@ -22,8 +23,8 @@ from src.domain.use_cases.create_goomer_order import CreateGoomerOrderUseCase
 from src.domain.use_cases.create_manual_order import CreateManualOrderUseCase
 from src.domain.use_cases.list_items import ListItemsUseCase
 from src.domain.use_cases.remove_item import RemoveItemUseCase
-from src.domain.use_cases.set_inventory_quantity import (
-    SetInventoryQuantityUseCase,
+from src.domain.use_cases.set_inventory_quantities import (
+    SetInventoryQuantitiesUseCase,
 )
 
 ORDER_SECTIONS_DELIMITER = "---------------------------------------"
@@ -88,23 +89,41 @@ class TelegramBotController:
         return output_message
 
     @staticmethod
-    def set_inventory_quantity(
+    def set_inventory_quantities(
         raw_input: str,
-        set_inventory_quantity_use_case: SetInventoryQuantityUseCase,
+        set_inventory_quantities_use_case: SetInventoryQuantitiesUseCase,
     ) -> str:
-        raw_item_name, inventory_quantity = re.split(r",(?=[^,]*$)", raw_input)
-        item_name = TelegramBotController._clean_text(raw_item_name)
-
-        input_dto = SetInventoryQuantityInputDTO(
-            item_name=item_name, inventory_quantity=int(inventory_quantity)
-        )
-        output_dto = set_inventory_quantity_use_case.execute(input_dto)
+        items_input_dto = TelegramBotController._extract_items(raw_input)
+        input_dto = SetInventoryQuantityInputDTO(items=items_input_dto)
+        output_dto = set_inventory_quantities_use_case.execute(input_dto)
         output_message = (
-            TelegramBotPresenter.format_set_inventory_quantity_message(
+            TelegramBotPresenter.format_set_inventory_quantities_message(
                 output_dto
             )
         )
         return output_message
+
+    @staticmethod
+    def _extract_items(
+        raw_input: str,
+    ) -> list[SetInventoryQuantityItemInputDTO]:
+        items_input_dto = []
+        raw_items_names_and_inventory_quantities = raw_input.split("\n")
+        for (
+            raw_item_name_and_inventory_quantity
+        ) in raw_items_names_and_inventory_quantities:
+            inventory_quantity, raw_item_name = (
+                raw_item_name_and_inventory_quantity.split(" ", 1)
+            )
+            item_name = TelegramBotController._clean_text(raw_item_name)
+            items_input_dto.append(
+                SetInventoryQuantityItemInputDTO(
+                    item_name=item_name,
+                    inventory_quantity=int(inventory_quantity),
+                )
+            )
+
+        return items_input_dto
 
     @staticmethod
     def create_manual_order(

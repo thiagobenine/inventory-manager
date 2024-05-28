@@ -7,7 +7,7 @@ from src.domain.ports.inbound.items.dtos import ListItemsOutputDTO
 from src.domain.use_cases.list_items import ListItemsUseCase
 
 
-class TestSetInventoryQuantityUseCase:
+class TestListItemsUseCase:
     @pytest.fixture
     def item_repository(self):
         return Mock()

@@ -70,12 +70,13 @@ class TelegramBotPresenter:
         return output_message
 
     @staticmethod
-    def format_set_inventory_quantity_message(
+    def format_set_inventory_quantities_message(
         output_dto: SetInventoryQuantityOutputDTO,
     ) -> str:
         output_message = "Estoque registrado com sucesso\\!\n\n"
-        output_message += f"*Nome:* {output_dto.item_name.capitalize()}\n"
-        output_message += f"*Novo Estoque:* {output_dto.inventory_quantity}"
+        for item in output_dto.items:
+            output_message += f"*Nome:* {item.item_name.capitalize()}\n"
+            output_message += f"*Novo Estoque:* {item.inventory_quantity}\n\n"
         return output_message
 
     @staticmethod

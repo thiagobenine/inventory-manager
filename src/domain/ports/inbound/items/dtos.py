@@ -19,14 +19,22 @@ class RemoveItemOutputDTO(BaseModel):
     item_name: str
 
 
+class SetInventoryQuantityItemInputDTO(BaseModel):
+    item_name: str
+    inventory_quantity: int
+
+
 class SetInventoryQuantityInputDTO(BaseModel):
+    items: list[SetInventoryQuantityItemInputDTO]
+
+
+class SetInventoryQuantityItemOutputDTO(BaseModel):
     item_name: str
     inventory_quantity: int
 
 
 class SetInventoryQuantityOutputDTO(BaseModel):
-    item_name: str
-    inventory_quantity: int
+    items: list[SetInventoryQuantityItemOutputDTO]
 
 
 class ItemOutputDTO(BaseModel):
