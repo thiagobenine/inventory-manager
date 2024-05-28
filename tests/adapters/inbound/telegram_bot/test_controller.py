@@ -17,8 +17,8 @@ from src.domain.use_cases.create_goomer_order import CreateGoomerOrderUseCase
 from src.domain.use_cases.create_manual_order import CreateManualOrderUseCase
 from src.domain.use_cases.list_items import ListItemsUseCase
 from src.domain.use_cases.remove_item import RemoveItemUseCase
-from src.domain.use_cases.set_inventory_quantity import (
-    SetInventoryQuantityUseCase,
+from src.domain.use_cases.set_inventory_quantities import (
+    SetInventoryQuantitiesUseCase,
 )
 from tests.adapters.inbound.telegram_bot.test_data import (
     CREATE_ORDER_TYPE_1_INPUT,
@@ -123,7 +123,7 @@ class TestTelegramBotController:
         # Assert
         assert output_message == "Ocorreu um erro inesperado\\."
 
-    def test_set_inventory_quantity_controller_with_success(
+    def test_set_inventory_quantities_controller_with_success(
         self, controller, mongo_connection
     ):
         # Arrange
@@ -132,11 +132,11 @@ class TestTelegramBotController:
             name="arroz integral e strogonoff de carne", inventory_quantity=100
         )
         item_repository.save(test_item)
-        raw_input = "arroz integral e strogonoff de carne,10"
+        raw_input = "10 arroz integral e strogonoff de carne"
 
         # Act
-        output_message = controller.set_inventory_quantity(
-            raw_input, SetInventoryQuantityUseCase(item_repository)
+        output_message = controller.set_inventory_quantities(
+            raw_input, SetInventoryQuantitiesUseCase(item_repository)
         )
 
         # Assert
@@ -146,7 +146,7 @@ class TestTelegramBotController:
         )
         assert "*Novo Estoque:* 10" in output_message
 
-    def test_set_inventory_quantity_controller_with_error(
+    def test_set_inventory_quantities_controller_with_error(
         self, controller, mongo_connection
     ):
         # Arrange
@@ -155,8 +155,8 @@ class TestTelegramBotController:
         # doesn't save the item
 
         # Act
-        output_message = controller.set_inventory_quantity(
-            raw_input, SetInventoryQuantityUseCase(item_repository)
+        output_message = controller.set_inventory_quantities(
+            raw_input, SetInventoryQuantitiesUseCase(item_repository)
         )
 
         # Assert

@@ -30,8 +30,8 @@ from src.domain.use_cases.create_goomer_order import CreateGoomerOrderUseCase
 from src.domain.use_cases.create_manual_order import CreateManualOrderUseCase
 from src.domain.use_cases.list_items import ListItemsUseCase
 from src.domain.use_cases.remove_item import RemoveItemUseCase
-from src.domain.use_cases.set_inventory_quantity import (
-    SetInventoryQuantityUseCase,
+from src.domain.use_cases.set_inventory_quantities import (
+    SetInventoryQuantitiesUseCase,
 )
 
 
@@ -39,7 +39,7 @@ class ConversationState(int, Enum):
     WAITING_OPTION = 0
     WAITING_ADD_ITEM = 1
     WAITING_REMOVE_ITEM = 2
-    WAITING_SET_INVENTORY_QUANTITY = 3
+    WAITING_SET_INVENTORY_QUANTITIES = 3
     WAITING_CREATE_GOOMER_ORDER = 4
     WAITING_CANCEL_ORDER = 5
     WAITING_CREATE_MANUAL_ORDER = 6
@@ -78,7 +78,8 @@ class TelegramBotCommandHandler:
             ],
             [
                 InlineKeyboardButton(
-                    "Registrar Estoque", callback_data="set_inventory_quantity"
+                    "Registrar Estoque",
+                    callback_data="set_inventory_quantities",
                 )
             ],
             [
@@ -130,16 +131,16 @@ class TelegramBotCommandHandler:
                 reply_markup=ForceReply(selective=True),
             )
             return ConversationState.WAITING_REMOVE_ITEM
-        elif query.data == "set_inventory_quantity":
+        elif query.data == "set_inventory_quantities":
             await query.message.reply_text(
                 "Você escolheu registrar o estoque. "
                 "Envie o nome da marmita e a quantidade em estoque "
                 "no seguinte formato:"
                 "\nnome, quantidade em estoque "
-                "\n\nExemplo: ARROZ INTEGRAL E STROGONOFF DE CARNE,10",
+                "\n\nExemplo: 10 ARROZ INTEGRAL E STROGONOFF DE CARNE",
                 reply_markup=ForceReply(selective=True),
             )
-            return ConversationState.WAITING_SET_INVENTORY_QUANTITY
+            return ConversationState.WAITING_SET_INVENTORY_QUANTITIES
         elif query.data == "create_goomer_order":
             await query.message.reply_text(
                 "Você escolheu registrar um pedido feito pelo Goomer. "
@@ -215,17 +216,17 @@ class TelegramBotCommandHandler:
         )
         return ConversationHandler.END
 
-    async def handle_set_inventory_quantity(
+    async def handle_set_inventory_quantities(
         self, update: Update, context: ContextTypes.DEFAULT_TYPE
     ) -> int:
         raw_input = update.message.text
         print(f"Raw input: {raw_input}")
 
-        set_inventory_quantity_use_case = SetInventoryQuantityUseCase(
+        set_inventory_quantities_use_case = SetInventoryQuantitiesUseCase(
             self.item_repository
         )
-        output_message = self.telegram_bot_controller.set_inventory_quantity(
-            raw_input, set_inventory_quantity_use_case
+        output_message = self.telegram_bot_controller.set_inventory_quantities(
+            raw_input, set_inventory_quantities_use_case
         )
 
         await update.message.reply_text(
@@ -309,10 +310,10 @@ class TelegramBotCommandHandler:
                         self.handle_remove_item,
                     )
                 ],
-                ConversationState.WAITING_SET_INVENTORY_QUANTITY: [
+                ConversationState.WAITING_SET_INVENTORY_QUANTITIES: [
                     MessageHandler(
                         filters.TEXT & ~filters.COMMAND,
-                        self.handle_set_inventory_quantity,
+                        self.handle_set_inventory_quantities,
                     )
                 ],
                 ConversationState.WAITING_CREATE_GOOMER_ORDER: [
