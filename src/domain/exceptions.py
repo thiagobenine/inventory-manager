@@ -6,25 +6,28 @@ class DomainException(Exception):
 
 
 class ItemNotFoundByNameError(DomainException):
+    item_name: str
+
     def __init__(self, item_name: str):
-        super().__init__(f"Item not found: {item_name}")
+        self.item_name = item_name
 
 
 class ItemsNotFoundByNameError(DomainException):
+    items_names: list[str]
+
     def __init__(self, items_names: list[str]):
-        super().__init__(f"Items not found: {items_names}")
-
-
-class ItemsNotFoundByIdError(DomainException):
-    def __init__(self, items_ids: list[str]):
-        super().__init__(f"Items not found: {items_ids}")
+        self.items_names = items_names
 
 
 class ItemAlreadyExistsError(DomainException):
+    item_name: str
+
     def __init__(self, item_name: str):
-        super().__init__(f"Item already exists: {item_name}")
+        self.item_name = item_name
 
 
 class OrderNotFoundError(DomainException):
+    order_id: ObjectId
+
     def __init__(self, order_id: ObjectId):
-        super().__init__(f"Order not found: {order_id}")
+        self.order_id = order_id

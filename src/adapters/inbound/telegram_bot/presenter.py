@@ -1,3 +1,9 @@
+from src.domain.exceptions import (
+    ItemAlreadyExistsError,
+    ItemNotFoundByNameError,
+    ItemsNotFoundByNameError,
+    OrderNotFoundError,
+)
 from src.domain.ports.inbound.items.dtos import (
     AddItemOutputDTO,
     ItemOutputDTO,
@@ -21,6 +27,36 @@ CATEGORY_ITEM_NAME_MAP: dict[str, str] = {
 
 
 class TelegramBotPresenter:
+    @staticmethod
+    def _map_error_to_message(error: Exception) -> str:
+        error_message = ""
+        match error:
+            case ItemNotFoundByNameError() as e:
+                error_message = (
+                    f"Marmita {e.item_name.capitalize()} não encontrada\\."
+                )
+            case ItemsNotFoundByNameError() as e:
+                names = [name.capitalize() for name in e.items_names]
+                if len(names) == 1:
+                    error_message = (
+                        f"Marmita {names[0].capitalize()} " "não encontrada\\."
+                    )
+                else:
+                    error_message = (
+                        f"Marmitas {', '.join(names)} não encontradas\\."
+                    )
+            case ItemAlreadyExistsError() as e:
+                error_message = (
+                    f"Marmita {e.item_name.capitalize()} "
+                    "já está cadastrada\\."
+                )
+            case OrderNotFoundError() as e:
+                error_message = f"Pedido {e.order_id} não encontrado\\."
+            case _:
+                error_message = "Ocorreu um erro inesperado\\."
+
+        return error_message
+
     @staticmethod
     def format_add_item_message(output_dto: AddItemOutputDTO) -> str:
         output_message = "Marmita registrada com sucesso\\!\n\n"

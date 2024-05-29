@@ -55,7 +55,11 @@ class TestTelegramBotController:
     ):
         # Arrange
         item_repository = MongoItemRepository(mongo_connection)
-        raw_input = "ARROZ INTEGRAL E STROGONOFF DE CARNE_10"
+        test_item = Item(
+            name="arroz integral e strogonoff de carne", inventory_quantity=100
+        )
+        item_repository.save(test_item)
+        raw_input = "ARROZ INTEGRAL E STROGONOFF DE CARNE, 10"
 
         # Act
         output_message = controller.add_item(
@@ -63,7 +67,10 @@ class TestTelegramBotController:
         )
 
         # Assert
-        assert output_message == "Ocorreu um erro inesperado\\."
+        assert output_message == (
+            "Marmita Arroz integral e strogonoff de "
+            "carne já está cadastrada\\."
+        )
 
     def test_list_items_controller_with_success(
         self, controller, mongo_connection
@@ -121,7 +128,10 @@ class TestTelegramBotController:
         )
 
         # Assert
-        assert output_message == "Ocorreu um erro inesperado\\."
+        assert (
+            output_message
+            == "Marmita Arroz integral e strogonoff de carne não encontrada\\."
+        )
 
     def test_set_inventory_quantities_controller_with_success(
         self, controller, mongo_connection
@@ -151,7 +161,8 @@ class TestTelegramBotController:
     ):
         # Arrange
         item_repository = MongoItemRepository(mongo_connection)
-        raw_input = "ARROZ INTEGRAL E STROGONOFF DE CARNE,10"
+        raw_input = "10 ARROZ INTEGRAL E STROGONOFF DE CARNE"
+        raw_input += "\n20 ARROZ INTEGRAL E STROGONOFF DE FRANGO"
         # doesn't save the item
 
         # Act
@@ -160,7 +171,10 @@ class TestTelegramBotController:
         )
 
         # Assert
-        assert output_message == "Ocorreu um erro inesperado\\."
+        assert output_message == (
+            "Marmitas Arroz integral e strogonoff de carne, "
+            "Arroz integral e strogonoff de frango não encontradas\\."
+        )
 
     @pytest.mark.parametrize(
         "raw_input",
@@ -230,7 +244,10 @@ class TestTelegramBotController:
         )
 
         # Assert
-        assert output_message == "Ocorreu um erro inesperado\\."
+        assert output_message == (
+            "Marmita Pure de batata doce,hamburguer de frango e "
+            "mix de legumes não encontrada\\."
+        )
 
     def test_create_manual_order_controller_with_success(
         self, controller, mongo_connection
@@ -285,7 +302,10 @@ class TestTelegramBotController:
         )
 
         # Assert
-        assert output_message == "Ocorreu um erro inesperado\\."
+        assert output_message == (
+            "Marmita Pure de batata doce,hamburguer de "
+            "frango e mix de legumes não encontrada\\."
+        )
 
     def test_cancel_order_controller_with_success(
         self, controller, mongo_connection
@@ -334,7 +354,7 @@ class TestTelegramBotController:
         # Arrange
         item_repository = MongoItemRepository(mongo_connection)
         order_repository = MongoOrderRepository(mongo_connection)
-        raw_input = "invalid_id"
+        raw_input = "60c0c5c7e3b9c3b3b2b8f2c5"
 
         # Act
         output_message = controller.cancel_order(
@@ -342,4 +362,6 @@ class TestTelegramBotController:
         )
 
         # Assert
-        assert output_message == "Ocorreu um erro inesperado\\."
+        assert output_message == (
+            "Pedido 60c0c5c7e3b9c3b3b2b8f2c5 " "não encontrado\\."
+        )

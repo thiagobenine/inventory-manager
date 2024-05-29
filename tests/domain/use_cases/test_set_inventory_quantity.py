@@ -102,7 +102,7 @@ class TestSetInventoryQuantitiesUseCase:
         with pytest.raises(ItemsNotFoundByNameError) as exc_info:
             use_case.execute(input_dto)
 
-        assert str(exc_info.value) == f"Items not found: ['{item_name}']"
+        assert exc_info.value.items_names == [item_name]
         item_repository.find_items_by_names.assert_called_once_with(
             [item_name]
         )

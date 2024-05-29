@@ -49,6 +49,6 @@ class TestRemoveItemUseCase:
         with pytest.raises(ItemNotFoundByNameError) as exc_info:
             use_case.execute(input_dto)
 
-        assert str(exc_info.value) == f"Item not found: {item_name}"
+        assert exc_info.value.item_name == item_name
         item_repository.find_item_by_name.assert_called_once_with(item_name)
         item_repository.remove_item_by_name.assert_not_called()
