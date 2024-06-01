@@ -199,7 +199,7 @@ class TestCreateGoomerOrderUseCase:
         # Act & Assert
         with pytest.raises(ItemsNotFoundByNameError) as exc_info:
             use_case.execute(input_dto)
-        assert str(exc_info.value) == "Items not found: ['Item 1']"
+        assert exc_info.value.items_names == ["Item 1"]
 
         item_repository.save.assert_not_called()
         order_repository.save.assert_not_called()

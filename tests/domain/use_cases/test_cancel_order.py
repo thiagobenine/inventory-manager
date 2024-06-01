@@ -121,6 +121,6 @@ class TestCancelOrderUseCase:
         # Act & Assert
         with pytest.raises(OrderNotFoundError) as exc_info:
             use_case.execute(input_dto)
-        assert str(exc_info.value) == f"Order not found: {order_id}"
+        assert exc_info.value.order_id == order_id
 
         order_repository.save.assert_not_called()

@@ -85,6 +85,6 @@ class TestAddItemUseCase:
         with pytest.raises(ItemAlreadyExistsError) as exc_info:
             use_case.execute(input_dto)
 
-        assert str(exc_info.value) == f"Item already exists: {item_name}"
+        assert exc_info.value.item_name == item_name
         item_repository.find_item_by_name.assert_called_once_with(item_name)
         item_repository.save.assert_not_called()
