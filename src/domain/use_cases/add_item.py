@@ -12,16 +12,19 @@ class AddItemUseCase:
         self.item_repository = item_repository
 
     def execute(self, input_dto: AddItemInputDTO) -> AddItemOutputDTO:
-        existing_item = self.item_repository.find_item_by_name(input_dto.name)
+        existing_item = self.item_repository.find_item_by_name(
+            input_dto.item_name
+        )
         if existing_item:
-            raise ItemAlreadyExistsError(input_dto.name)
+            raise ItemAlreadyExistsError(input_dto.item_name)
 
         new_item = Item(
-            name=input_dto.name,
+            name=input_dto.item_name,
             inventory_quantity=input_dto.inventory_quantity,
         )
         self.item_repository.save(new_item)
 
         return AddItemOutputDTO(
-            name=new_item.name, inventory_quantity=new_item.inventory_quantity
+            item_name=new_item.name,
+            inventory_quantity=new_item.inventory_quantity,
         )

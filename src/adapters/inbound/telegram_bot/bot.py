@@ -115,8 +115,8 @@ class TelegramBotCommandHandler:
             await query.message.reply_text(
                 "Você escolheu registrar uma nova marmita. "
                 "\nEnvie os dados da marmita no seguinte formato:"
-                "\nnome, quantidade em estoque "
-                "\n\nExemplo: ARROZ INTEGRAL E STROGONOFF DE CARNE,10",
+                "\nestoque nome"
+                "\n\nExemplo: 10 ARROZ INTEGRAL E STROGONOFF DE CARNE",
                 reply_markup=ForceReply(selective=True),
             )
             return ConversationState.WAITING_ADD_ITEM
@@ -133,10 +133,10 @@ class TelegramBotCommandHandler:
             return ConversationState.WAITING_REMOVE_ITEM
         elif query.data == "set_inventory_quantities":
             await query.message.reply_text(
-                "Você escolheu registrar o estoque. "
-                "Envie o nome da marmita e a quantidade em estoque "
-                "no seguinte formato:"
-                "\nnome, quantidade em estoque "
+                "Você escolheu registrar o estoque.\n"
+                "Envie o nome da(s) marmita(s) e a(s) "
+                "quantidade(s) em estoque no seguinte formato:"
+                "\nestoque nome"
                 "\n\nExemplo: 10 ARROZ INTEGRAL E STROGONOFF DE CARNE",
                 reply_markup=ForceReply(selective=True),
             )

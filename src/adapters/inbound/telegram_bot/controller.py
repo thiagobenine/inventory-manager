@@ -47,7 +47,7 @@ class TelegramBotController:
             try:
                 return func(self, *args, **kwargs)
             except Exception as e:
-                error_message = TelegramBotPresenter._map_error_to_message(e)
+                error_message = TelegramBotPresenter.map_error_to_message(e)
                 print(f"Error in {func.__name__}: {error_message}")
                 return error_message
 
@@ -55,12 +55,7 @@ class TelegramBotController:
 
     @staticmethod
     def add_item(raw_input: str, add_item_use_case: AddItemUseCase) -> str:
-        raw_item_name, inventory_quantity = raw_input.rsplit(",", 1)
-        item_name = TelegramBotController._clean_text(raw_item_name)
-
-        input_dto = AddItemInputDTO(
-            name=item_name, inventory_quantity=int(inventory_quantity)
-        )
+        input_dto = TelegramBotController._extract_item(raw_input)
         output_dto = add_item_use_case.execute(input_dto)
         output_message = TelegramBotPresenter.format_add_item_message(
             output_dto
@@ -125,6 +120,17 @@ class TelegramBotController:
             )
 
         return items_input_dto
+
+    @staticmethod
+    def _extract_item(
+        raw_input: str,
+    ) -> AddItemInputDTO:
+        inventory_quantity, raw_item_name = raw_input.split(" ", 1)
+        item_name = TelegramBotController._clean_text(raw_item_name)
+        return AddItemInputDTO(
+            item_name=item_name,
+            inventory_quantity=int(inventory_quantity),
+        )
 
     @staticmethod
     def create_manual_order(
