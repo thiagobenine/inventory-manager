@@ -36,7 +36,7 @@ class TestTelegramBotController:
     ):
         # Arrange
         item_repository = MongoItemRepository(mongo_connection)
-        raw_input = "ARROZ INTEGRAL E STROGONOFF DE CARNE,10"
+        raw_input = "10 ARROZ INTEGRAL E STROGONOFF DE CARNE"
 
         # Act
         output_message = controller.add_item(
@@ -59,7 +59,7 @@ class TestTelegramBotController:
             name="arroz integral e strogonoff de carne", inventory_quantity=100
         )
         item_repository.save(test_item)
-        raw_input = "ARROZ INTEGRAL E STROGONOFF DE CARNE, 10"
+        raw_input = "10 ARROZ INTEGRAL E STROGONOFF DE CARNE"
 
         # Act
         output_message = controller.add_item(
@@ -68,7 +68,7 @@ class TestTelegramBotController:
 
         # Assert
         assert output_message == (
-            "Marmita Arroz integral e strogonoff de "
+            "Erro: Marmita Arroz integral e strogonoff de "
             "carne já está cadastrada\\."
         )
 
@@ -129,8 +129,8 @@ class TestTelegramBotController:
 
         # Assert
         assert (
-            output_message
-            == "Marmita Arroz integral e strogonoff de carne não encontrada\\."
+            output_message == "Erro: Marmita Arroz integral e "
+            "strogonoff de carne não encontrada\\."
         )
 
     def test_set_inventory_quantities_controller_with_success(
@@ -172,7 +172,7 @@ class TestTelegramBotController:
 
         # Assert
         assert output_message == (
-            "Marmitas Arroz integral e strogonoff de carne, "
+            "Erro: Marmitas Arroz integral e strogonoff de carne, "
             "Arroz integral e strogonoff de frango não encontradas\\."
         )
 
@@ -245,7 +245,7 @@ class TestTelegramBotController:
 
         # Assert
         assert output_message == (
-            "Marmita Pure de batata doce,hamburguer de frango e "
+            "Erro: Marmita Pure de batata doce,hamburguer de frango e "
             "mix de legumes não encontrada\\."
         )
 
@@ -303,7 +303,7 @@ class TestTelegramBotController:
 
         # Assert
         assert output_message == (
-            "Marmita Pure de batata doce,hamburguer de "
+            "Erro: Marmita Pure de batata doce,hamburguer de "
             "frango e mix de legumes não encontrada\\."
         )
 
@@ -363,5 +363,5 @@ class TestTelegramBotController:
 
         # Assert
         assert output_message == (
-            "Pedido 60c0c5c7e3b9c3b3b2b8f2c5 " "não encontrado\\."
+            "Erro: Pedido 60c0c5c7e3b9c3b3b2b8f2c5 " "não encontrado\\."
         )

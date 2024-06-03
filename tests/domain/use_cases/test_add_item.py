@@ -23,7 +23,7 @@ class TestAddItemUseCase:
         inventory_quantity = 100
         item_repository.find_item_by_name.return_value = None
         input_dto = AddItemInputDTO(
-            name=item_name, inventory_quantity=inventory_quantity
+            item_name=item_name, inventory_quantity=inventory_quantity
         )
         use_case = AddItemUseCase(item_repository)
 
@@ -32,7 +32,7 @@ class TestAddItemUseCase:
 
         # Assert
         assert isinstance(output_dto, AddItemOutputDTO)
-        assert output_dto.name == item_name
+        assert output_dto.item_name == item_name
         assert output_dto.inventory_quantity == inventory_quantity
 
         item_repository.find_item_by_name.assert_called_once_with(item_name)
@@ -48,7 +48,7 @@ class TestAddItemUseCase:
         inventory_quantity = -10
         item_repository.find_item_by_name.return_value = None
         input_dto = AddItemInputDTO(
-            name=item_name, inventory_quantity=inventory_quantity
+            item_name=item_name, inventory_quantity=inventory_quantity
         )
         use_case = AddItemUseCase(item_repository)
 
@@ -57,7 +57,7 @@ class TestAddItemUseCase:
 
         # Assert
         assert isinstance(output_dto, AddItemOutputDTO)
-        assert output_dto.name == item_name
+        assert output_dto.item_name == item_name
         assert output_dto.inventory_quantity == inventory_quantity
 
         item_repository.find_item_by_name.assert_called_once_with(item_name)
@@ -77,7 +77,7 @@ class TestAddItemUseCase:
             name=item_name, inventory_quantity=inventory_quantity
         )
         input_dto = AddItemInputDTO(
-            name=item_name, inventory_quantity=inventory_quantity
+            item_name=item_name, inventory_quantity=inventory_quantity
         )
         use_case = AddItemUseCase(item_repository)
 
