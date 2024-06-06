@@ -201,7 +201,7 @@ description = ""
 optional = false
 python-versions = ">=3.12,<4.0"
 files = [
-    {file = "myloglib-0.1.0-py3-none-any.whl", hash = "sha256:54f2bd3ff01dbf51c6d879b2c9a617c17ca113d655ddc0a56ddf07f823786b4a"},
+    {file = "myloglib-0.1.0-py3-none-any.whl", hash = "sha256:9474359c6f6c155ff052411de545c438b54373f87e2a06e79011893112e47c32"},
 ]
 
 [package.dependencies]
