@@ -1,6 +1,6 @@
 from contextvars import ContextVar
 import os
-from myloglib.factories.logger_factory import LoggerFactory
+from myloglib.factories.config_builder import LoggingConfigBuilder
 from src.adapters.inbound.telegram_bot.application import run_application
 from src.adapters.inbound.telegram_bot.bot import TelegramBotCommandHandler
 from src.adapters.outbound.repositories.mongo.client import (
@@ -19,10 +19,10 @@ from contextvars import ContextVar
 correlation_context_var = ContextVar("correlation_id")
 
 if __name__ == "__main__":
-    logger = LoggerFactory.build_default_logger("test_logger", correlation_context_var)
-    correlation_context_var.set("some_correlation_id")
+    logger = LoggingConfigBuilder.build_default_logger("test_logger", correlation_context_var)
+    correlation_context_var.set("some_correlation_id2")
 
-    logger.info("Starting application (with correlation id)")
+    logger.info("Starting application (with correlation id 2)")
     connection = MongoConnection(
         os.getenv("MONGO_CONNECTION_STRING"),
     )
