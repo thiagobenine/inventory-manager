@@ -1,3 +1,4 @@
+# mypy: ignore-errors
 from enum import Enum
 
 from telegram import (

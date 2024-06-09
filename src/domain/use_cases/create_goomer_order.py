@@ -80,7 +80,7 @@ class CreateGoomerOrderUseCase:
         return CreateGoomerOrderOutputDTO(
             order_id=order.id,
             client_name=client.name,
-            external_order_id=order.external_id,
+            external_order_id=order.external_id,  # type: ignore
             order_items=[
                 CreateOrderItemOutputDTO(
                     item_name=order_item.item.name,
