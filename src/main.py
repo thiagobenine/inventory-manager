@@ -13,7 +13,7 @@ from src.adapters.outbound.repositories.mongo.order import MongoOrderRepository
 
 if __name__ == "__main__":
     connection = MongoConnection(
-        os.getenv("MONGO_CONNECTION_STRING"),
+        os.getenv("MONGO_CONNECTION_STRING", "mongodb://localhost:27017")
     )
     connection.connect()
 

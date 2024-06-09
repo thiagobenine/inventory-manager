@@ -57,7 +57,7 @@ class MongoItemRepository:
         item_doc.save()
 
     def save_all(self, items: list[Item]) -> None:
-        bulk_operations = []
+        bulk_operations: list[InsertOne | UpdateOne] = []
         for item in items:
             existing_item = ItemDocument.objects(name=item.name).first()
             if existing_item:

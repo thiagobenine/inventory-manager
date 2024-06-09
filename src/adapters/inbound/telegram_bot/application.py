@@ -7,7 +7,7 @@ from telegram.ext import (
 from src.adapters.inbound.telegram_bot.bot import TelegramBotCommandHandler
 
 PORT = int(os.environ.get("PORT", 5000))
-TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "fake")
 application = Application.builder().token(TOKEN).build()
 
 

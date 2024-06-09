@@ -2,7 +2,7 @@ import functools
 import re
 import unicodedata
 
-from bson import ObjectId
+from pydantic_mongo import ObjectIdField
 
 from src.adapters.inbound.telegram_bot.presenter import TelegramBotPresenter
 from src.domain.ports.inbound.items.dtos import (
@@ -219,9 +219,9 @@ class TelegramBotController:
         if not filtered_raw_order_items:
             raise ValueError("Order Items not found")
 
-        order_items_to_quantity_map = {}
+        order_items_to_quantity_map: dict[str, int] = {}
         for raw_order_item in filtered_raw_order_items:
-            quantity = int(re.search(r"(\d+)x", raw_order_item).group(1))
+            quantity = int(re.search(r"(\d+)x", raw_order_item).group(1))  # type: ignore
             item_name = raw_order_item.split("x", 1)[1].strip()
             if item_name in order_items_to_quantity_map:
                 order_items_to_quantity_map[item_name] += quantity
@@ -257,7 +257,7 @@ class TelegramBotController:
         raw_input: str, cancel_order_use_case: CancelOrderPort
     ) -> str:
         order_id = raw_input
-        input_dto = CancelOrderInputDTO(order_id=ObjectId(order_id))
+        input_dto = CancelOrderInputDTO(order_id=ObjectIdField(order_id))
         output_dto = cancel_order_use_case.execute(input_dto)
         output_message = TelegramBotPresenter.format_cancel_order_message(
             output_dto
