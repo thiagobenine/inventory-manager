@@ -8,14 +8,14 @@ from src.adapters.inbound.telegram_bot.presenter import TelegramBotPresenter
 from src.domain.ports.inbound.items.dtos import (
     AddItemInputDTO,
     RemoveItemInputDTO,
-    SetInventoryQuantityInputDTO,
+    SetInventoryQuantitiesInputDTO,
     SetInventoryQuantityItemInputDTO,
 )
 from src.domain.ports.inbound.items.ports import (
     AddItemPort,
     ListItemsPort,
     RemoveItemPort,
-    SetInventoryQuantityPort,
+    SetInventoryQuantitiesPort,
 )
 from src.domain.ports.inbound.orders.dtos import (
     CancelOrderInputDTO,
@@ -89,10 +89,10 @@ class TelegramBotController:
     @staticmethod
     def set_inventory_quantities(
         raw_input: str,
-        set_inventory_quantities_use_case: SetInventoryQuantityPort,
+        set_inventory_quantities_use_case: SetInventoryQuantitiesPort,
     ) -> str:
         items_input_dto = TelegramBotController._extract_items(raw_input)
-        input_dto = SetInventoryQuantityInputDTO(items=items_input_dto)
+        input_dto = SetInventoryQuantitiesInputDTO(items=items_input_dto)
         output_dto = set_inventory_quantities_use_case.execute(input_dto)
         output_message = (
             TelegramBotPresenter.format_set_inventory_quantities_message(

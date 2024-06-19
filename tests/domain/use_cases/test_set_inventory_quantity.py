@@ -6,9 +6,9 @@ from bson import ObjectId
 from src.domain.entities.item import Item
 from src.domain.exceptions import ItemsNotFoundByNameError
 from src.domain.ports.inbound.items.dtos import (
-    SetInventoryQuantityInputDTO,
+    SetInventoryQuantitiesInputDTO,
+    SetInventoryQuantitiesOutputDTO,
     SetInventoryQuantityItemInputDTO,
-    SetInventoryQuantityOutputDTO,
 )
 from src.domain.use_cases.set_inventory_quantities import (
     SetInventoryQuantitiesUseCase,
@@ -32,14 +32,14 @@ class TestSetInventoryQuantitiesUseCase:
         item_input_dto = SetInventoryQuantityItemInputDTO(
             item_name=item_name, inventory_quantity=inventory_quantity
         )
-        input_dto = SetInventoryQuantityInputDTO(items=[item_input_dto])
+        input_dto = SetInventoryQuantitiesInputDTO(items=[item_input_dto])
         use_case = SetInventoryQuantitiesUseCase(item_repository)
 
         # Act
         output_dto = use_case.execute(input_dto)
 
         # Assert
-        assert isinstance(output_dto, SetInventoryQuantityOutputDTO)
+        assert isinstance(output_dto, SetInventoryQuantitiesOutputDTO)
         assert output_dto.items[0].item_name == item_name
         assert output_dto.items[0].inventory_quantity == inventory_quantity
 
@@ -64,14 +64,14 @@ class TestSetInventoryQuantitiesUseCase:
         item_input_dto = SetInventoryQuantityItemInputDTO(
             item_name=item_name, inventory_quantity=inventory_quantity
         )
-        input_dto = SetInventoryQuantityInputDTO(items=[item_input_dto])
+        input_dto = SetInventoryQuantitiesInputDTO(items=[item_input_dto])
         use_case = SetInventoryQuantitiesUseCase(item_repository)
 
         # Act
         output_dto = use_case.execute(input_dto)
 
         # Assert
-        assert isinstance(output_dto, SetInventoryQuantityOutputDTO)
+        assert isinstance(output_dto, SetInventoryQuantitiesOutputDTO)
         assert output_dto.items[0].item_name == item_name
         assert output_dto.items[0].inventory_quantity == inventory_quantity
 
@@ -94,7 +94,7 @@ class TestSetInventoryQuantitiesUseCase:
         item_input_dto = SetInventoryQuantityItemInputDTO(
             item_name=item_name, inventory_quantity=inventory_quantity
         )
-        input_dto = SetInventoryQuantityInputDTO(items=[item_input_dto])
+        input_dto = SetInventoryQuantitiesInputDTO(items=[item_input_dto])
 
         use_case = SetInventoryQuantitiesUseCase(item_repository)
 

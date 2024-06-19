@@ -48,8 +48,8 @@ class CancelOrderItemOutputDTO(BaseModel):
 
 class CancelOrderOutputDTO(BaseModel):
     order_id: ObjectIdField
-    client_name: str | None
-    external_order_id: int | None
+    client_name: str | None = None
+    external_order_id: int | None = None
     order_items: list[CancelOrderItemOutputDTO]
     is_cancelled: bool
     created_at: str

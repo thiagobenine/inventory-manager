@@ -1,9 +1,9 @@
 from src.domain.entities.item import Item
 from src.domain.exceptions import ItemsNotFoundByNameError
 from src.domain.ports.inbound.items.dtos import (
-    SetInventoryQuantityInputDTO,
+    SetInventoryQuantitiesInputDTO,
+    SetInventoryQuantitiesOutputDTO,
     SetInventoryQuantityItemOutputDTO,
-    SetInventoryQuantityOutputDTO,
 )
 from src.domain.ports.outbound.repositories.item import ItemRepositoryInterface
 
@@ -13,8 +13,8 @@ class SetInventoryQuantitiesUseCase:
         self.item_repository = item_repository
 
     def execute(
-        self, input_dto: SetInventoryQuantityInputDTO
-    ) -> SetInventoryQuantityOutputDTO:
+        self, input_dto: SetInventoryQuantitiesInputDTO
+    ) -> SetInventoryQuantitiesOutputDTO:
         items_names_from_dto = [
             item_input.item_name for item_input in input_dto.items
         ]
@@ -34,7 +34,7 @@ class SetInventoryQuantitiesUseCase:
 
         self.item_repository.save_all(items_from_repository)
 
-        return SetInventoryQuantityOutputDTO(
+        return SetInventoryQuantitiesOutputDTO(
             items=[
                 SetInventoryQuantityItemOutputDTO(
                     item_name=item.name,

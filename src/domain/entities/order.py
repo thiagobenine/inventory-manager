@@ -13,12 +13,12 @@ class OrderItem(BaseModel):
 
 
 class Order(Entity):
-    external_id: int | None
-    external_created_at: str | None
+    external_id: int | None = None
+    external_created_at: str | None = None
     created_at: datetime
     updated_at: datetime
     is_cancelled: bool
-    client: Client | None
+    client: Client | None = None
     order_items: list[OrderItem]
 
     def cancel(self):
