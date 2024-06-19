@@ -6,8 +6,8 @@ from src.domain.ports.inbound.items.dtos import (
     ListItemsOutputDTO,
     RemoveItemInputDTO,
     RemoveItemOutputDTO,
-    SetInventoryQuantityInputDTO,
-    SetInventoryQuantityOutputDTO,
+    SetInventoryQuantitiesInputDTO,
+    SetInventoryQuantitiesOutputDTO,
 )
 
 
@@ -25,7 +25,7 @@ class RemoveItemPort(Protocol):
     ) -> RemoveItemOutputDTO: ...
 
 
-class SetInventoryQuantityPort(Protocol):
+class SetInventoryQuantitiesPort(Protocol):
     def execute(
-        self, input_dto: SetInventoryQuantityInputDTO
-    ) -> SetInventoryQuantityOutputDTO: ...
+        self, input_dto: SetInventoryQuantitiesInputDTO
+    ) -> SetInventoryQuantitiesOutputDTO: ...

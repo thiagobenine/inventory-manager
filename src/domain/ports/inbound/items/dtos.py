@@ -24,7 +24,7 @@ class SetInventoryQuantityItemInputDTO(BaseModel):
     inventory_quantity: int
 
 
-class SetInventoryQuantityInputDTO(BaseModel):
+class SetInventoryQuantitiesInputDTO(BaseModel):
     items: list[SetInventoryQuantityItemInputDTO]
 
 
@@ -33,7 +33,7 @@ class SetInventoryQuantityItemOutputDTO(BaseModel):
     inventory_quantity: int
 
 
-class SetInventoryQuantityOutputDTO(BaseModel):
+class SetInventoryQuantitiesOutputDTO(BaseModel):
     items: list[SetInventoryQuantityItemOutputDTO]
 
 

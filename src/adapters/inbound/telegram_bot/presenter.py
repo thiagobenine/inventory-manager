@@ -9,7 +9,7 @@ from src.domain.ports.inbound.items.dtos import (
     ItemOutputDTO,
     ListItemsOutputDTO,
     RemoveItemOutputDTO,
-    SetInventoryQuantityOutputDTO,
+    SetInventoryQuantitiesOutputDTO,
 )
 from src.domain.ports.inbound.orders.dtos import (
     CancelOrderItemOutputDTO,
@@ -107,7 +107,7 @@ class TelegramBotPresenter:
 
     @staticmethod
     def format_set_inventory_quantities_message(
-        output_dto: SetInventoryQuantityOutputDTO,
+        output_dto: SetInventoryQuantitiesOutputDTO,
     ) -> str:
         output_message = "Estoque registrado com sucesso\\!\n\n"
         for item in output_dto.items:
