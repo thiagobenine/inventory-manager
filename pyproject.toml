@@ -9,19 +9,19 @@ license = "MIT"
 
 [tool.poetry.dependencies]
 python = "3.12.0"
-pydantic = "^2.6.3"
+pydantic = "^2.7.4"
 ruff = "^0.3.3"
-pymongo = "^4.6.3"
+pymongo = "^4.7.3"
 mongoengine = "^0.28.2"
-pydantic-mongo = "^2.2.0"
+pydantic-mongo = "^2.3.0"
 mongomock = "^4.1.2"
-setuptools = "^69.5.1"
-python-telegram-bot = {extras = ["webhooks"], version = "^21.1.1"}
+setuptools = "^70.1.0"
+python-telegram-bot = {extras = ["webhooks"], version = "^21.3"}
 
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^8.0.2"
-freezegun = "^1.4.0"
+pytest = "^8.2.2"
+freezegun = "^1.5.1"
 
 [build-system]
 requires = ["poetry-core"]
