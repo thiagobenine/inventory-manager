@@ -19,15 +19,16 @@ from contextvars import ContextVar
 correlation_context_var = ContextVar("correlation_id")
 
 if __name__ == "__main__":
-    logger = LoggingConfigBuilder.build_default_logger("test_logger", correlation_context_var)
-    correlation_context_var.set("some_correlation_id2")
+    logger = LoggingConfigBuilder.build_default_logger(
+        "test_logger", correlation_context_var
+    )
+    correlation_context_var.set("some_correlation_id4")
 
-    logger.info("Starting application (with correlation id 2)")
+    logger.info("Starting application (with correlation id 4)")
     connection = MongoConnection(
         os.getenv("MONGO_CONNECTION_STRING"),
     )
     connection.connect()
-
 
     item_repository = MongoItemRepository(connection)
     order_repository = MongoOrderRepository(connection)
